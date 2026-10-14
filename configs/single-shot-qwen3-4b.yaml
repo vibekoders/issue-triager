@@ -1,0 +1,2 @@
+# SingleShot with a larger local model: same prompt, config change only.
+model: ollama:qwen3:4b

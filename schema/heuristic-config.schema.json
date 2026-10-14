@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "HeuristicConfig",
+  "description": "`Heuristic`: no models. Every answer comes from the issue's text, and a\nfield the text gives no signal for is left out.",
+  "type": "object",
+  "properties": {
+    "base_rates": {
+      "description": "Fill the fields the text gives no signal for with dev-split base\nrates instead (kind: bug; area: the most common SIG; severity: the\nmost common priority for the kind), as version 2 always did. A\nseparate prior-only baseline: the plain heuristic doesn't guess.",
+      "type": "boolean"
+    }
+  }
+}

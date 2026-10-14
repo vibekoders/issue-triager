@@ -1,0 +1,6 @@
+# Agent without tools: no investigation loop, just the final structured call
+# (SingleShot's prompt through the agent's answer type). The experiment 4
+# baseline for "agent without tools -> with search_issues".
+model: ollama:qwen3:1.7b
+tools: []
+max_turns: 4

@@ -1,0 +1,9 @@
+# Ensemble with a single qwen3:1.7b voter (experiment 5): the baseline the
+# 3-voter ensembles are compared with. Same voter as the first one in
+# ensemble-vote.yaml, so the difference is only the extra voters.
+voters:
+  - kind: llm
+    model: ollama:qwen3:1.7b
+    temperature: 0.0
+aggregator:
+  kind: vote

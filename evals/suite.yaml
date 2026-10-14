@@ -1,0 +1,47 @@
+# The eval suite: the things that must be equal for two runs to be compared.
+#
+# suite_id = hash(dataset hash, EVALUATORS_VERSION, RUBRIC_VERSION, judge model,
+# this file's composite weights and duplicates_k). Changing anything here
+# starts a new suite instead of looking like a regression or an improvement.
+# Fix the weights before the first run; don't tune them to a result.
+
+# Composite score: the weighted mean of the per-field run-level scores, over
+# the fields that have an expected answer (for the judged fields: whenever the
+# judge is on). A field the strategy didn't produce counts as 0, so answering
+# less never looks better. Per-field scores and coverage are always reported
+# next to it.
+#
+# Why these weights:
+# - kind (3): the first thing a triager decides; it routes everything else.
+# - area (2), enough_info (2): who looks at it, and whether they can act on it
+#   or have to ask the author first.
+# - severity (1): only about a third of the issues have a priority label, and
+#   the label is often set late.
+# - is_regression, security_sensitive (1 each): rare positives (about 2-3% of
+#   the issues), so plain accuracy would reward always answering false. Their
+#   score here is balanced accuracy, the mean of the true-positive and
+#   true-negative rates (EVALUATORS_VERSION 2), so "always false" scores 50,
+#   not 98. When the cases hold only one class (dev-20 and test-20 have no
+#   positives at all), it is the rate on that class alone and the report flags
+#   it. compare-runs also reports precision, recall and plain accuracy. The
+#   per-case pass/fail evaluations are unchanged.
+# - duplicates (1): very few labeled duplicates (a handful per dataset).
+# - quality, reply (1 each): scored by the LLM judge, not by labels, so they
+#   carry the judge's error as well as the strategy's. The default judge
+#   (ollama:qwen3:4b) is the strategies' own model family, because the local
+#   Ollama only has Qwen-based models, so it may favour their output; pass a
+#   judge of another family for judged results that matter (evals/README.md,
+#   "The judge's model family").
+composite_weights:
+  kind: 3
+  area: 2
+  enough_info: 2
+  severity: 1
+  is_regression: 1
+  security_sensitive: 1
+  duplicates: 1
+  quality: 1
+  reply: 1
+
+# DuplicateRecall: recall of the labeled duplicate target in the top k candidates.
+duplicates_k: 5

@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WorkflowConfig",
+  "description": "`Workflow`: one decision-model call, then LLM escalation for the fields\nit's unsure about.",
+  "type": "object",
+  "properties": {
+    "decision_model": {
+      "description": "A System One decision model, e.g. `ollama:nimble` or `typesafe:jev-latest`.",
+      "type": "string"
+    },
+    "escalation": {
+      "description": "`None` (or absent): decision model only.",
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Escalation"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "reply_model": {
+      "description": "Writes `suggested_reply` from the final triage. `None`: no reply.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "decision_model"
+  ],
+  "$defs": {
+    "Escalation": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string"
+        },
+        "thresholds": {
+          "$ref": "#/$defs/Thresholds",
+          "default": {
+            "accept": 0.8,
+            "per_field": {}
+          }
+        },
+        "sub_agent": {
+          "description": "Use a tool-using sub-agent (instead of a single LLM call) for the\nfields that need repo context: `area` and `duplicates`.",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "model"
+      ]
+    },
+    "Thresholds": {
+      "description": "Confidence thresholds for accepting a decision-model answer.",
+      "type": "object",
+      "properties": {
+        "accept": {
+          "description": "Answers at or above this confidence are accepted as they are.",
+          "type": "number",
+          "format": "double",
+          "default": 0.8
+        },
+        "per_field": {
+          "description": "Per-field overrides of `accept`, by `Triage` field name.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "double"
+          },
+          "default": {}
+        }
+      }
+    }
+  }
+}

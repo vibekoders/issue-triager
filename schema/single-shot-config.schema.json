@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SingleShotConfig",
+  "description": "`SingleShot`: one LLM call with structured output.",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string"
+    },
+    "temperature": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "format": "float",
+      "default": null
+    }
+  },
+  "required": [
+    "model"
+  ]
+}

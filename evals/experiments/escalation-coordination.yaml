@@ -1,0 +1,18 @@
+# Experiment: draft_verify vs workflow with escalation (formerly m6). It compares
+# with workflow-escalation's steps, so it runs after them.
+# Step keys: see README.md in this directory.
+
+id: escalation-coordination
+title: draft_verify vs workflow with escalation (accept 0.8 both)
+shows: workflow-coordinated vs agent-coordinated escalation
+steps:
+  - id: draft-verify
+    strategy: DraftVerify
+    split: dev
+    config: {decision_model: "{decision}", verifier_model: "{llm}", thresholds: {accept: 0.8}, max_turns: 8}
+    label: draft_verify {decision} + {llm}, accept 0.8
+    baseline: workflow-esc-0.8
+compare:
+  - title: who coordinates escalation
+    baseline: workflow-esc-0.8
+    runs: [workflow-decision-only, workflow-esc-0.8, draft-verify]

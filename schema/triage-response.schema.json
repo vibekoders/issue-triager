@@ -1,0 +1,550 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TriageResponse",
+  "description": "The output of every strategy.",
+  "type": "object",
+  "properties": {
+    "triage": {
+      "$ref": "#/$defs/Triage"
+    },
+    "usage": {
+      "$ref": "#/$defs/Usage"
+    },
+    "strategy": {
+      "description": "The strategy's service name, e.g. `Heuristic`.",
+      "type": "string"
+    },
+    "version": {
+      "description": "The strategy's code version. Bumped when its logic or prompts change.",
+      "type": "string"
+    },
+    "config_hash": {
+      "description": "The hash of the config that produced this response.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "triage",
+    "usage",
+    "strategy",
+    "version",
+    "config_hash"
+  ],
+  "$defs": {
+    "Triage": {
+      "description": "The triage details. A field a strategy can't produce is `None`, never a\nguess, so evaluators can tell \"wrong\" from \"not attempted\".",
+      "type": "object",
+      "properties": {
+        "kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "area": {
+          "description": "One of the repo's `sig/*` labels, e.g. `sig/node`.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "severity": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field3"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "is_regression": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field4"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "security_sensitive": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field4"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "quality": {
+          "description": "1 (unusable) to 5 (exemplary), see `QUALITY_RUBRIC`.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field5"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reproducibility": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field6"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "outdated_version": {
+          "description": "Whether the reported version is older than the repo's latest release.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field4"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field7"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "duplicates": {
+          "description": "Candidate duplicate issue numbers, most likely first.",
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field8"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "suggested_reply": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Field2"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      }
+    },
+    "Field": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/Kind"
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Kind": {
+      "type": "string",
+      "enum": [
+        "bug",
+        "feature",
+        "question",
+        "docs",
+        "cleanup",
+        "failing_test",
+        "flake",
+        "other",
+        "spam"
+      ]
+    },
+    "Field2": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Field3": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/Severity"
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Severity": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "important_soon",
+        "important_longterm",
+        "backlog"
+      ]
+    },
+    "Field4": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "boolean"
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Field5": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer",
+          "format": "uint8",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Field6": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/Reproducibility"
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Reproducibility": {
+      "description": "Whether a bug report has what a maintainer needs to reproduce it.",
+      "type": "object",
+      "properties": {
+        "has_version": {
+          "type": "boolean"
+        },
+        "has_environment": {
+          "type": "boolean"
+        },
+        "has_steps": {
+          "type": "boolean"
+        },
+        "has_expected_actual": {
+          "type": "boolean"
+        },
+        "has_minimal_repro": {
+          "type": "boolean"
+        },
+        "has_logs": {
+          "type": "boolean"
+        },
+        "missing": {
+          "description": "The checklist items that are missing.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ReproItem"
+          }
+        },
+        "enough_info": {
+          "description": "The overall verdict: can a maintainer start reproducing it?",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "has_version",
+        "has_environment",
+        "has_steps",
+        "has_expected_actual",
+        "has_minimal_repro",
+        "has_logs",
+        "missing",
+        "enough_info"
+      ]
+    },
+    "ReproItem": {
+      "type": "string",
+      "enum": [
+        "version",
+        "environment",
+        "steps",
+        "expected_actual",
+        "minimal_repro",
+        "logs"
+      ]
+    },
+    "Field7": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "$ref": "#/$defs/Scope"
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Scope": {
+      "oneOf": [
+        {
+          "description": "One problem or request.",
+          "type": "string",
+          "const": "single"
+        },
+        {
+          "description": "Several unrelated problems or requests bundled together.",
+          "type": "string",
+          "const": "multiple"
+        }
+      ]
+    },
+    "Field8": {
+      "description": "A value with how sure the strategy is about it and why.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "uint64",
+            "minimum": 0
+          }
+        },
+        "confidence": {
+          "description": "0..=1. Calibrated for decision models; self-reported for LLMs.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "format": "double",
+          "default": null
+        },
+        "evidence": {
+          "description": "A short quote from the issue, or the reason for the value.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "Usage": {
+      "description": "What a triage cost. Summed from journaled `ctx.run` results, so it is the\nsame on every replay.",
+      "type": "object",
+      "properties": {
+        "input_tokens": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "llm_calls": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "decision_calls": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "tool_calls": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "latency_ms": {
+          "description": "Summed duration of the model and tool calls, not the wall time of the\nwhole invocation (which includes Restate's own scheduling).",
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "cost_usd": {
+          "description": "In USD. Local models are priced at shadow prices, see [`crate::price`].",
+          "type": "number",
+          "format": "double"
+        }
+      },
+      "required": [
+        "input_tokens",
+        "output_tokens",
+        "llm_calls",
+        "decision_calls",
+        "tool_calls",
+        "latency_ms",
+        "cost_usd"
+      ]
+    }
+  }
+}

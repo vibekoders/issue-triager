@@ -1,0 +1,76 @@
+# Experiment: every strategy on the test split (formerly m7), and the overview
+# (the Pareto frontier across these runs, in overview.md).
+# Step keys: see README.md in this directory.
+
+id: final-comparison
+title: final run on the test split
+shows: the Pareto chart across all strategies
+steps:
+  # Free: the heuristic's stored outputs on the same test set, re-scored
+  # under this step's run id.
+  - id: final-heuristic
+    strategy: Heuristic
+    split: test
+    config: {}
+    label: heuristic v3
+    version: "3"
+    source: heuristic@test
+  - id: final-heuristic-base-rates
+    strategy: Heuristic
+    split: test
+    config: {base_rates: true}
+    label: heuristic v3 + base rates
+    version: "3"
+    source: heuristic-base-rates@test
+    baseline: final-heuristic
+  - id: final-single-shot
+    strategy: SingleShot
+    split: test
+    config: {model: "{llm}"}
+    config_from_best: [single-shot-llm, single-shot-llm-large]
+    label: single_shot (best of single-shot-model-size)
+    baseline: final-heuristic
+  - id: final-workflow-decision-only
+    strategy: Workflow
+    split: test
+    config: {decision_model: "{decision}"}
+    label: workflow {decision}, no escalation
+    baseline: final-heuristic
+  - id: final-workflow-esc-0.8
+    strategy: Workflow
+    split: test
+    config: {decision_model: "{decision}", escalation: {model: "{llm}", thresholds: {accept: 0.8}}}
+    label: workflow {decision} + escalation {llm}, accept 0.8
+    baseline: final-workflow-decision-only
+  - id: final-agent-tools
+    strategy: Agent
+    split: test
+    config: {model: "{llm}", max_turns: 8}
+    label: agent {llm}, with tools
+    baseline: final-heuristic
+  - id: final-ensemble-vote
+    strategy: Ensemble
+    split: test
+    config:
+      voters: [{kind: llm, model: "{llm}"}, {kind: llm, model: "{llm_large}"}, {kind: decision, model: "{decision}"}]
+      aggregator: {kind: vote}
+    label: ensemble {llm} + {llm_large} + {decision}, vote
+    baseline: final-heuristic
+  - id: final-draft-verify
+    strategy: DraftVerify
+    split: test
+    config: {decision_model: "{decision}", verifier_model: "{llm}", thresholds: {accept: 0.8}, max_turns: 8}
+    label: draft_verify {decision} + {llm}, accept 0.8
+    baseline: final-workflow-esc-0.8
+compare:
+  - title: all strategies on the test split
+    baseline: final-heuristic
+    runs: [final-heuristic, final-heuristic-base-rates, final-single-shot, final-workflow-decision-only,
+           final-workflow-esc-0.8, final-agent-tools, final-ensemble-vote, final-draft-verify]
+
+# overview.md: the Pareto frontier across these runs (all on the test split,
+# one suite) and a per-strategy summary of every experiment run.
+overview:
+  title: final runs on the test split
+  runs: [final-heuristic, final-heuristic-base-rates, final-single-shot, final-workflow-decision-only,
+         final-workflow-esc-0.8, final-agent-tools, final-ensemble-vote, final-draft-verify]

@@ -1,0 +1,3 @@
+# Workflow, decision model only: one tev1 call answers every typed field, no
+# escalation and no reply. The cheapest model-based setup.
+decision_model: ollama:tev1:0.8b-q8_0

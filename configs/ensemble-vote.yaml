@@ -1,0 +1,13 @@
+# Ensemble, aggregated in code: two qwen3:1.7b voters at different
+# temperatures plus a tev1 decision voter (weighted by its confidence).
+voters:
+  - kind: llm
+    model: ollama:qwen3:1.7b
+    temperature: 0.0
+  - kind: llm
+    model: ollama:qwen3:1.7b
+    temperature: 0.7
+  - kind: decision
+    model: ollama:tev1:0.8b-q8_0
+aggregator:
+  kind: vote

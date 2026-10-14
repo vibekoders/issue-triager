@@ -1,0 +1,34 @@
+# Experiment: ensemble with 1 voter, 3 voters (vote), 3 voters (judge) (formerly m5).
+# Step keys: see README.md in this directory.
+
+id: ensemble-voters
+title: ensemble 1 voter → 3 voters (vote) → 3 voters (judge)
+shows: buying accuracy with more calls
+steps:
+  - id: ensemble-1-voter
+    strategy: Ensemble
+    split: dev
+    config:
+      voters: [{kind: llm, model: "{llm}"}]
+      aggregator: {kind: vote}
+    label: ensemble 1 voter {llm}
+  - id: ensemble-vote
+    strategy: Ensemble
+    split: dev
+    config:
+      voters: [{kind: llm, model: "{llm}"}, {kind: llm, model: "{llm_large}"}, {kind: decision, model: "{decision}"}]
+      aggregator: {kind: vote}
+    label: ensemble {llm} + {llm_large} + {decision}, vote
+    baseline: ensemble-1-voter
+  - id: ensemble-judge
+    strategy: Ensemble
+    split: dev
+    config:
+      voters: [{kind: llm, model: "{llm}"}, {kind: llm, model: "{llm_large}"}, {kind: decision, model: "{decision}"}]
+      aggregator: {kind: judge, model: "{llm_large}"}
+    label: ensemble {llm} + {llm_large} + {decision}, judge {llm_large}
+    baseline: ensemble-vote
+compare:
+  - title: voters and aggregator
+    baseline: ensemble-1-voter
+    runs: [ensemble-1-voter, ensemble-vote, ensemble-judge]

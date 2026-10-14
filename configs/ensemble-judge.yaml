@@ -1,0 +1,13 @@
+# Ensemble, aggregated by an LLM judge that reads the issue and all votes.
+voters:
+  - kind: llm
+    model: ollama:qwen3:1.7b
+    temperature: 0.0
+  - kind: llm
+    model: ollama:qwen3:1.7b
+    temperature: 0.7
+  - kind: decision
+    model: ollama:tev1:0.8b-q8_0
+aggregator:
+  kind: judge
+  model: ollama:qwen3:4b

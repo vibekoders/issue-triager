@@ -1,0 +1,8 @@
+# The image needs only the Rust workspace. An allowlist keeps everything else
+# out of the build context: target/, data/ (the corpus is mounted at run time),
+# .env (keys come in through env_file at run time), .git, .devenv, evals/.venv.
+*
+!Cargo.toml
+!Cargo.lock
+!crates/
+crates/*/target

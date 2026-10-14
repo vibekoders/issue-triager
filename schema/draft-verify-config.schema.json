@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DraftVerifyConfig",
+  "description": "`DraftVerify`: a decision-model draft, then one agent verifies the fields\nbelow the threshold.",
+  "type": "object",
+  "properties": {
+    "decision_model": {
+      "type": "string"
+    },
+    "verifier_model": {
+      "type": "string"
+    },
+    "thresholds": {
+      "$ref": "#/$defs/Thresholds",
+      "default": {
+        "accept": 0.8,
+        "per_field": {}
+      }
+    },
+    "max_turns": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0,
+      "default": 8
+    }
+  },
+  "required": [
+    "decision_model",
+    "verifier_model"
+  ],
+  "$defs": {
+    "Thresholds": {
+      "description": "Confidence thresholds for accepting a decision-model answer.",
+      "type": "object",
+      "properties": {
+        "accept": {
+          "description": "Answers at or above this confidence are accepted as they are.",
+          "type": "number",
+          "format": "double",
+          "default": 0.8
+        },
+        "per_field": {
+          "description": "Per-field overrides of `accept`, by `Triage` field name.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "format": "double"
+          },
+          "default": {}
+        }
+      }
+    }
+  }
+}

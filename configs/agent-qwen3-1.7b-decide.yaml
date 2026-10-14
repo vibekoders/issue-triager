@@ -1,0 +1,5 @@
+# Agent with a `decide` tool backed by the tev1 decision model, for the typed
+# fields the agent wants a calibrated answer on.
+model: ollama:qwen3:1.7b
+decision_tool: ollama:tev1:0.8b-q8_0
+max_turns: 8

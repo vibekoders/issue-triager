@@ -1,0 +1,228 @@
+# What the experiments cost, and how long they take
+
+Every number below comes from measured runs, priced for other models. The
+measurements are the hosted 20-issue run that [RESULTS.md](../RESULTS.md)
+reports (GPT-6 Luna and Sol on Azure, TypeSafe Jev, the Sol judge; results in
+`evals/results/archive-before-profiles/h2m*/`, with the current strategy
+versions) and the local Ollama runs on a CPU-only machine (4 CPUs, 8 GB RAM, no
+GPU). [scripts/cost_table.py](../scripts/cost_table.py) reads the results files
+and writes the tables in the generated block; the text around it says what is
+measured and what is estimated.
+
+In short:
+
+- **All experiments on 20 issues** cost about **$1.50 without the judge**
+  and **$3.80 with the Sol judge** on GPT-6, $4.50–$6.90 on Claude
+  (Haiku/Sonnet) and $2.40–$5.00 on Gemini (Flash-Lite/Pro). They take about
+  20 minutes with 8 cases in parallel.
+- **All experiments on 500 issues** cost about **$36 without the judge and
+  $94 with the Sol judge** on GPT-6 ($39 with Luna as judge), $113–$171 on
+  Claude and $61–$124 on Gemini, and take about 9 hours.
+- **The judge is often the biggest line item.** With a large model it costs
+  more than all the GPT-6 strategy calls together. Use the cheap model as
+  judge for big runs (see [The judge](#the-judge)).
+- **Locally on a CPU it costs nothing but time**: about 10 hours for the 20-issue
+  experiments without the judge and about 22 hours with it. The 500-issue version
+  would take about 10 days without the judge and 3 weeks with it on a CPU, so use a GPU
+  or a hosted profile for it.
+
+For one concrete configuration, `run-experiments --size 500 --dry-run` (with
+your `--profile` and `--model` overrides) lists every step with its estimated
+model calls and time, from the per-call seconds in
+[evals/experiments/profiles.yaml](../evals/experiments/profiles.yaml).
+
+## How to read the tables
+
+- **Profiles.** `openai` is the measured `hosted` profile (Luna as `llm`, Sol as
+  `llm_large` and judge). `anthropic` and `gemini` swap in Claude Haiku 4.5 /
+  Sonnet 5 and Gemini 3.5 Flash-Lite / 3.1 Pro Preview for the same roles. All
+  three keep Jev as the decision model, and the local tev1:0.8b as
+  `decision_alt`. `local` is all Ollama (qwen3:1.7b, qwen3:4b, tev1:0.8b,
+  tev1:4b, qwen3:4b as judge).
+- **Prices** (USD per million tokens, input / output): gpt-6-luna 0.10 / 0.50,
+  gpt-6-sol 2 / 10, claude-haiku-4-5 1 / 5, claude-sonnet-5 2 / 10,
+  gemini-3.5-flash-lite 0.30 / 2.50, gemini-3.1-pro-preview 2 / 12, Jev
+  (`typesafe:jev-latest`) 0.042 / 0 (output is free). Check them against the
+  providers' price pages before relying on them.
+- **Ollama is $0** in these tables. The project's price table
+  ([price.rs](../crates/triage-core/src/price.rs)) gives local models *shadow
+  prices* (what a hosted model of about the same size costs), so the reports'
+  cost axis means something. The reports therefore show a small cost for local
+  runs that nobody pays.
+- **Tokens are reused across models.** Token counts measured on GPT-6 Luna and
+  Sol (including their reasoning tokens) are used for every hosted model.
+  Other tokenizers and reasoning budgets shift them by about ±30%, and
+  reasoning models such as Sonnet 5 or Gemini 3.1 Pro may spend noticeably more
+  output tokens than measured here. Treat the Claude and Gemini columns as
+  estimates.
+- **Mixed-model runs are split by role.** A results file sums the usage of every
+  model a case called. The script splits it: a workflow's Jev draft is the
+  Jev-only workflow's usage on the same cases, and the rest is the escalation or
+  verifier model. An ensemble's `llm` voter is the 1-voter run, its Jev voter
+  is the Jev-only workflow, and `llm_large` is the rest (the Sol voter, plus the
+  judge aggregator in `ensemble-judge`). Repriced at GPT-6 prices, the split
+  reproduces the measured cost within 3% (the "Check" column).
+- **Hosted time** is the measured per-case duration (the strategy's calls) plus
+  the judge's time per case (6.9 s, the median derived from each run's wall
+  time), divided by 8 cases in parallel. Other providers are assumed to be as
+  fast as GPT-6. Small models are usually faster, and large reasoning models can
+  be slower.
+- **Local time** is calls × seconds per call, one case at a time: qwen3:1.7b
+  30 s (the measured median of `verify-singleshot-1`; its mean was 52 s),
+  qwen3:4b 60 s and tev1:4b 15 s per call (the `profiles.yaml` figures), and
+  tev1:0.8b's 3-call draft at 13.7 s per case (measured in
+  `h2m3-workflow-tev1-none`). Call counts come from the hosted runs, so a local
+  model that escalates more or takes more agent turns takes longer. The agent's
+  long contexts (about 37k input tokens per case) make its CPU time an
+  underestimate. **A GPU makes Ollama roughly 10–30× faster (an estimate, not
+  measured here).** That turns the 20-issue local run into well under an hour
+  without the judge.
+
+## The tables
+
+<!-- generated by scripts/cost_table.py; edit the script, not this block -->
+
+Inputs: 25 results files in `evals/results/archive-before-profiles`; hosted judge time per case (median, derived from wall time): 6.9 s; tev1:0.8b draft on CPU (3 calls, measured): 13.7 s.
+
+### Per dataset size and provider profile
+
+All experiments = the 25 step runs of `evals/experiments/*.yaml` at that size (each on N cases: dev-N for the development experiments, test-N for final-comparison). `run-experiments` takes `--size 20` or `--size 500`; the 200 and 580 rows are the same plan at that many cases (cost and time are linear in cases). Single runs are strategy-only (no judge).
+
+| Profile | Cases | SingleShot (llm) | Workflow, decision + llm escalation 0.8 | All experiments, no judge | All experiments + cheap judge | All experiments + large judge |
+|---|---|---|---|---|---|---|
+| openai (gpt-6-luna / gpt-6-sol) | 20 | $0.01 · 14 s | $0.02 · 25 s | $1.44 · 12 min | $1.56 · 21 min | $3.77 · 21 min |
+|  | 200 | $0.11 · 2 min | $0.16 · 4 min | $14 · 2.0 h | $16 · 3.5 h | $38 · 3.5 h |
+|  | 500 | $0.27 · 6 min | $0.41 · 11 min | $36 · 5.0 h | $39 · 8.8 h | $94 · 8.8 h |
+|  | 580 | $0.31 · 7 min | $0.47 · 12 min | $42 · 5.8 h | $45 · 10.2 h | $109 · 10.2 h |
+| anthropic (claude-haiku-4-5 / claude-sonnet-5) | 20 | $0.11 · 14 s | $0.14 · 25 s | $4.53 · 12 min | $5.69 · 21 min | $6.85 · 21 min |
+|  | 200 | $1.08 · 2 min | $1.45 · 4 min | $45 · 2.0 h | $57 · 3.5 h | $69 · 3.5 h |
+|  | 500 | $2.71 · 6 min | $3.62 · 11 min | $113 · 5.0 h | $142 · 8.8 h | $171 · 8.8 h |
+|  | 580 | $3.14 · 7 min | $4.20 · 12 min | $131 · 5.8 h | $165 · 10.2 h | $199 · 10.2 h |
+| gemini (gemini-3.5-flash-lite / gemini-3.1-pro-preview) | 20 | $0.04 · 14 s | $0.06 · 25 s | $2.44 · 12 min | $2.89 · 21 min | $4.97 · 21 min |
+|  | 200 | $0.45 · 2 min | $0.59 · 4 min | $24 · 2.0 h | $29 · 3.5 h | $50 · 3.5 h |
+|  | 500 | $1.12 · 6 min | $1.48 · 11 min | $61 · 5.0 h | $72 · 8.8 h | $124 · 8.8 h |
+|  | 580 | $1.30 · 7 min | $1.71 · 12 min | $71 · 5.8 h | $84 · 10.2 h | $144 · 10.2 h |
+| local (qwen3:1.7b / qwen3:4b) | 20 | $0 · 10 min | $0 · 42 min | $0 · 10.0 h | – | $0 · 21.7 h |
+|  | 200 | $0 · 1.7 h | $0 · 6.9 h | $0 · 4.2 days | – | $0 · 9.0 days |
+|  | 500 | $0 · 4.2 h | $0 · 17.3 h | $0 · 10.4 days | – | $0 · 22.6 days |
+|  | 580 | $0 · 4.8 h | $0 · 20.1 h | $0 · 12.1 days | – | $0 · 26.2 days |
+
+Cheap judge = the profile's `llm` model (Luna, Haiku, Flash-Lite), large judge = its `llm_large` (Sol, Sonnet, Pro). Local judge = qwen3:4b. Hosted profiles keep Jev as the decision model and the local tev1:0.8b as `decision_alt` (one case at a time, 14 s per case: about 1.9 h of every 500-case run).
+
+Measured, hosted 20-issue run (the 21 h2m* results files): strategy $1.48, judge $2.09 (Sol), summed step wall time 39 min.
+
+### Per strategy, per case (strategy only, no judge)
+
+Tokens and calls are means over 20 cases (dev-20), measured on GPT-6 Luna (Sol for `llm_large`) and Jev. Cost per **1,000 cases**, with the `llm` role on the column's model and Jev as the decision model; for the ensemble rows `llm_large` is the same provider's large model (Sol, Sonnet, Pro).
+
+| Step | Tokens in / out | Calls llm / decision / tool | Latency | Check | gpt-6-luna | gpt-6-sol | claude-haiku-4-5 | claude-sonnet-5 | gemini-3.5-flash-lite | gemini-3.1-pro-preview | Ollama, CPU time |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `heuristic` Heuristic v3 | 0 / 0 | 0.0 / 0.0 / 0.0 | 0.0 s | – | $0 | $0 | $0 | $0 | $0 | $0 | 0 s |
+| `single-shot-llm` SingleShot, llm | 2,340 / 616 | 1.0 / 0.0 / 0.0 | 5.7 s | 100% | $0.54 | $11 | $5.42 | $11 | $2.24 | $12 | 30 s |
+| `single-shot-llm-large` SingleShot, llm_large | 2,340 / 456 | 1.0 / 0.0 / 0.0 | 6.1 s | 100% | $0.46 | $9.24 | $4.62 | $9.24 | $1.84 | $10 | 60 s |
+| `workflow-decision-only` Workflow, Jev only | 2,325 / 613 | 0.0 / 1.0 / 0.0 | 0.2 s | 100% | $0.10 | $0.10 | $0.10 | $0.10 | $0.10 | $0.10 | 14 s |
+| `workflow-esc-0.8` Workflow, Jev + llm escalation at 0.8 | 5,887 / 1,328 | 3.7 / 1.0 / 0.0 | 10.1 s | 100% | $0.81 | $14 | $7.24 | $14 | $2.95 | $16 | 2 min |
+| `workflow-esc-0.6` Workflow, Jev + llm escalation at 0.6 | 3,866 / 983 | 1.6 / 1.0 / 0.0 | 4.9 s | 100% | $0.44 | $6.87 | $3.49 | $6.87 | $1.48 | $7.61 | 63 s |
+| `workflow-esc-0.9` Workflow, Jev + llm escalation at 0.9 | 7,291 / 1,628 | 5.2 / 1.0 / 0.0 | 14.4 s | 100% | $1.10 | $20 | $10 | $20 | $4.13 | $22 | 3 min |
+| `workflow-decision-alt` Workflow, decision_alt only (tev1 on Ollama) | 21,348 / 17 | 0.0 / 3.0 / 0.0 | 13.5 s | – | $0 | $0 | $0 | $0 | $0 | $0 | 45 s |
+| `agent-no-tools` Agent, no tools | 2,338 / 680 | 1.0 / 0.0 / 0.0 | 6.4 s | 100% | $0.57 | $11 | $5.74 | $11 | $2.40 | $13 | 30 s |
+| `agent-tools` Agent, with tools | 36,569 / 1,113 | 6.8 / 0.0 / 10.7 | 20.8 s | 100% | $4.21 | $84 | $42 | $84 | $14 | $86 | 3 min |
+| `ensemble-1-voter` Ensemble, 1 voter | 2,340 / 593 | 1.0 / 0.0 / 0.0 | 5.7 s | 100% | $0.53 | $11 | $5.30 | $11 | $2.18 | $12 | 30 s |
+| `ensemble-vote` Ensemble, llm + llm_large + Jev, vote | 7,005 / 1,615 | 2.0 / 1.0 / 0.0 | 13.3 s | 98% | $9.40 | $19 | $14 | $19 | $12 | $21 | 2 min |
+| `ensemble-judge` Ensemble, 3 voters, llm_large judge | 9,655 / 2,032 | 3.0 / 1.0 / 0.0 | 17.3 s | 97% | $19 | $29 | $24 | $29 | $22 | $32 | 3 min |
+| `draft-verify` DraftVerify, Jev + llm verifier | 11,357 / 1,297 | 3.6 / 1.0 / 2.4 | 9.7 s | 100% | $1.34 | $25 | $13 | $25 | $4.52 | $26 | 2 min |
+
+Check: the role split re-priced at GPT-6/Jev prices, as a share of the measured `cost_usd` (100% = the split adds up). `single-shot-llm-large` is priced with the column's model as the only model. `workflow-decision-alt` runs tev1 on Ollama: $0 here. Ollama column: $0, time per case on the CPU machine with qwen3:1.7b as `llm`, qwen3:4b as `llm_large` and tev1:0.8b as the decision model (calls x seconds per call; estimate except tev1).
+
+### The judge
+
+Measured judge usage (GPT-6 Sol as judge): a strategy that writes a `suggested_reply` gets two judge requests (quality + reply), one without (Heuristic, Workflow, DraftVerify). Cost per **1,000 cases**. Judge tokens were measured with Sol as judge; Luna as judge (the heuristic runs judged by Luna) used about the same input and 30–50% more output.
+
+| Judge requests | Tokens in / out | gpt-6-luna | gpt-6-sol | claude-haiku-4-5 | claude-sonnet-5 | gemini-3.5-flash-lite | gemini-3.1-pro-preview |
+|---|---|---|---|---|---|---|---|
+| with reply (2 requests, 10 runs) | 1,998 / 305 | $0.35 | $7.04 | $3.52 | $7.04 | $1.36 | $7.65 |
+| without reply (1 request, 11 runs) | 834 / 142 | $0.15 | $3.09 | $1.54 | $3.09 | $0.60 | $3.37 |
+
+On GPT-6 a Sol judge costs more per case than most strategies (SingleShot on Luna is $0.54 per 1,000 cases, its Sol judging $7). For big runs use the cheap model as judge (`--model judge=azure:gpt-6-luna`, Haiku or Flash-Lite): 20× cheaper on GPT-6. Keep the judge fixed across runs you compare, since the judge model is part of the suite id. Spot-check it against hand labels (`compare-runs judge-agreement`) before trusting it.
+
+### Per step (openai profile, per case)
+
+| Step | Split | Measured run | Strategy $/case | Judge (Sol) $/case | Duration | Judge requests |
+|---|---|---|---|---|---|---|
+| `heuristic` | dev | h2m7-heuristic-test-20 | $0 | $0.0030 | 0.0 s | 1 |
+| `heuristic` | test | h2m7-heuristic-test-20 | $0 | $0.0030 | 0.0 s | 1 |
+| `heuristic-base-rates` | dev | h2m7-heuristic-base-rates-test-20 | $0 | $0.0030 | 0.0 s | 1 |
+| `heuristic-base-rates` | test | h2m7-heuristic-base-rates-test-20 | $0 | $0.0030 | 0.0 s | 1 |
+| `single-shot-llm` | dev | h2m2-single-shot-luna-dev-20 | $0.0005 | $0.0069 | 5.7 s | 2 |
+| `single-shot-llm-large` | dev | h2m2-single-shot-sol-dev-20 | $0.0092 | $0.0072 | 6.1 s | 2 |
+| `workflow-decision-only` | dev | h2m3-workflow-none-dev-20 | $0.0001 | $0.0032 | 0.3 s | 1 |
+| `workflow-esc-0.8` | dev | h2m3-workflow-esc-0.8-dev-20 | $0.0008 | $0.0032 | 10.2 s | 1 |
+| `workflow-esc-0.6` | dev | h2m3-workflow-esc-0.6-dev-20 | $0.0004 | $0.0031 | 5.0 s | 1 |
+| `workflow-esc-0.9` | dev | h2m3-workflow-esc-0.9-dev-20 | $0.0011 | $0.0032 | 14.4 s | 1 |
+| `workflow-decision-alt` | dev | h2m3-workflow-tev1-none-dev-20 | $0 | $0.0032 | 13.7 s | 1 |
+| `agent-no-tools` | dev | h2m4-agent-notools-dev-20 | $0.0006 | $0.0070 | 6.4 s | 2 |
+| `agent-tools` | dev | h2m4-agent-tools-dev-20 | $0.0042 | $0.0071 | 20.8 s | 2 |
+| `ensemble-1-voter` | dev | h2m5-ensemble-1-voter-dev-20 | $0.0005 | $0.0068 | 5.7 s | 2 |
+| `ensemble-vote` | dev | h2m5-ensemble-vote-dev-20 | $0.0094 | $0.0069 | 13.3 s | 2 |
+| `ensemble-judge` | dev | h2m5-ensemble-judge-dev-20 | $0.02 | $0.0074 | 17.3 s | 2 |
+| `draft-verify` | dev | h2m6-draft-verify-dev-20 | $0.0013 | $0.0031 | 9.8 s | 1 |
+| `final-heuristic` | test | h2m7-heuristic-test-20 | $0 | $0.0030 | 0.0 s | 1 |
+| `final-heuristic-base-rates` | test | h2m7-heuristic-base-rates-test-20 | $0 | $0.0030 | 0.0 s | 1 |
+| `final-single-shot` | test | h2m7-single-shot-test-20 | $0.0088 | $0.0071 | 5.6 s | 2 |
+| `final-workflow-decision-only` | test | h2m7-workflow-none-test-20 | $0.0001 | $0.0030 | 0.2 s | 1 |
+| `final-workflow-esc-0.8` | test | h2m7-workflow-esc-0.8-test-20 | $0.0009 | $0.0030 | 11.3 s | 1 |
+| `final-agent-tools` | test | h2m7-agent-tools-test-20 | $0.0044 | $0.0071 | 21.2 s | 2 |
+| `final-ensemble-vote` | test | h2m7-ensemble-vote-test-20 | $0.0097 | $0.0069 | 13.3 s | 2 |
+| `final-draft-verify` | test | h2m7-draft-verify-test-20 | $0.0013 | $0.0030 | 10.0 s | 1 |
+
+## Notes on the measurements
+
+- **The measured 20-issue run.** The 21 `h2m*` results files add up to $1.48 in
+  strategy calls and $2.09 for the Sol judge, which matches RESULTS.md's
+  $3.60. The estimate above for the same plan (25 step runs, including the
+  heuristic's dev runs and the two derived final-heuristic steps, all judged) is
+  $3.77. The steps' summed wall time was 39 minutes (RESULTS.md: about 45
+  with overhead). Two steps, `h2m7-agent-tools-test-20` and
+  `h2m7-draft-verify-test-20`, took about 11 minutes each instead of about
+  1.5. Their per-case strategy durations were normal (at most 34 s), so the time
+  went into the judge, most likely Azure rate limiting and retries on Sol.
+  Without those two steps the run matches the ~21-minute estimate.
+- **Rate limits.** At 8 cases in parallel the agent step sends about 8 × 37k
+  input tokens every ~21 s, roughly 0.85 M input tokens per minute to the `llm`
+  model. That is above many default per-deployment quotas. If you see 429s or
+  steps that take far longer than their per-case latency, lower
+  `--max-concurrency` or raise the quota. Time then grows in proportion.
+- **The Ollama step in hosted profiles.** `workflow-decision-alt` runs the local
+  tev1:0.8b one case at a time, even in the hosted profiles: about 14 s per
+  case, plus the judge, so about 3 hours of a 500-issue judged run. With
+  `--model decision_alt=<hosted decision model>` it runs in parallel like the
+  others.
+- **Local judging is the slow part.** The judge adds one or two qwen3:4b calls
+  per case, about 1–2 minutes each on the CPU. That more than doubles the local
+  run, so the local table's judged column assumes 60 s per judge call. The
+  only measured local judged run (`archive-pre-leak-fixes/verify-singleshot-1`,
+  5 cases, qwen3:1.7b strategy, qwen3:4b judge, 2 cases in flight) took 64
+  minutes, about 13 minutes per case, most of it the judge. Two models that
+  don't both fit in 8 GB of RAM get swapped in and out, so judged local runs
+  can be several times slower than this table. For local runs, prefer
+  `--no-judge` or a hosted judge (`--model judge=azure:gpt-6-luna`).
+- **Not measured.** Claude and Gemini speed and token counts, any GPU timing,
+  qwen3:4b and tev1:4b per-call times (taken from `profiles.yaml`), and the
+  local agent's real CPU time.
+- **`final-single-shot`** takes the config of the better `single-shot-model-size`
+  step. Sol won the measured run, so the plan prices it on `llm_large`. If
+  `llm` wins, the plan gets cheaper.
+
+## Regenerating
+
+```sh
+python3 scripts/cost_table.py                     # from the repo root; standard library only
+python3 scripts/cost_table.py --results evals/results/archive-before-profiles
+```
+
+It prints the generated block above as Markdown. To update this page, replace
+the block between the `generated by` comment and "Notes on the measurements"
+with the output. To price other models or profiles, edit `PRICES`,
+`PROFILES` and `LOCAL_SECONDS` at the top of the script. To measure again
+after a hosted run with the new composed run ids, map the steps in
+`build_steps` to the new run directories (`{step id}-{split}-{size}-{profile}`).

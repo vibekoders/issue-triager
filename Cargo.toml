@@ -1,0 +1,37 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+# So `cargo run -- serve` at the root runs the service. Workspace-wide
+# commands need `--workspace` (`cargo test --workspace`).
+default-members = ["crates/triage-service"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[workspace.dependencies]
+triage-core = { path = "crates/triage-core" }
+
+allama = { version = "0.1", features = ["extract", "derive"] }
+allama-providers = "0.1"
+allama-systemone = "0.1"
+anyhow = "1"
+logfire = "0.13"
+opentelemetry = "0.32"
+opentelemetry_sdk = "0.32"
+regex = "1"
+restate-sdk = "0.12"
+rusqlite = { version = "0.40", features = ["bundled"] }
+schemars = "1"
+serde = { version = "1", features = ["derive"] }
+# preserve_order: schemars then lists properties in declaration order, which is
+# the order Ollama's grammar makes a model write them (evidence before answers).
+serde_json = { version = "1", features = ["preserve_order"] }
+sha2 = "0.10"
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal"] }
+tracing = "0.1"
+tracing-opentelemetry = "0.33"
+tracing-subscriber = "0.3"

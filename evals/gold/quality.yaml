@@ -1,0 +1,14 @@
+# Hand-labeled issue quality, to check the LLM judge (PLAN.md: about 50 issues).
+#
+# Rate each issue as filed (title and body only, not the comments) on the
+# rubric in crates/triage-core/src/triage.rs (QUALITY_RUBRIC, RUBRIC_VERSION 1):
+#   1 unusable, 2 poor, 3 adequate (needs a follow-up), 4 good, 5 exemplary.
+# Pick cases from a dataset the judged runs used (e.g. the first 50 of
+# datasets/kubernetes-dev-200.yaml), then:
+#   compare-runs judge-agreement evals/results/<run>/<file>.json
+# reports exact / within-one agreement, MAE and weighted kappa of the judge
+# (and of the strategy) against these labels.
+rubric_version: "1"
+labels:
+  # kubernetes-107415: {score: 4, labeled_by: your-name}
+  # kubernetes-123456: {score: 2, labeled_by: your-name, note: "no version, no logs"}

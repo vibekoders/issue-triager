@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentConfig",
+  "description": "`Agent`: a tool-using agent loop.",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "string"
+    },
+    "decision_tool": {
+      "description": "Gives the agent a `decide` tool backed by this decision model.",
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    },
+    "max_turns": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0,
+      "default": 8
+    },
+    "tools": {
+      "description": "Which corpus tools the agent gets, by name: `search_issues`,\n`get_issue`, `list_labels`, `get_issue_templates`, `get_releases`.\nAbsent: all of them. `[]`: none, so there is no loop and the agent is a\nsingle structured call (the `decide` tool, if configured, still counts\nas a tool).",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "model"
+  ]
+}

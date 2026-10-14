@@ -1,0 +1,5 @@
+# Workflow with Clef (Cloudflare Workers AI) as the decision model (PLAN.md
+# experiment 3, "Jev vs. Clef"), no escalation and no reply; see
+# workflow-jev.yaml. Needs CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN; not
+# run here (no keys in this environment).
+decision_model: cloudflare:@cf/cloudflare/clef

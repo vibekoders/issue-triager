@@ -1,0 +1,3 @@
+# Agent: a tool-using qwen3:1.7b loop over the local corpus tools.
+model: ollama:qwen3:1.7b
+max_turns: 8

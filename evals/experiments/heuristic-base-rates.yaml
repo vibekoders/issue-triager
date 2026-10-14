@@ -1,0 +1,30 @@
+# Experiment: the heuristic with and without base rates (formerly m1).
+# Two steps on both splits; no model calls but the judge.
+# Step keys: see README.md in this directory.
+
+id: heuristic-base-rates
+title: heuristic v3 → v3 with base rates
+shows: the eval loop itself, at $0 in strategy calls
+# v3 answers only what it has a signal for; base_rates fills the gaps with
+# each kind's most common dev-split value (a config change, no redeploy).
+steps:
+  - id: heuristic
+    strategy: Heuristic
+    split: [dev, test]
+    config: {}
+    label: heuristic v3
+    version: "3"
+  - id: heuristic-base-rates
+    strategy: Heuristic
+    split: [dev, test]
+    config: {base_rates: true}
+    label: heuristic v3 + base rates
+    version: "3"
+    baseline: heuristic
+compare:
+  - title: dev (tuning)
+    baseline: heuristic@dev
+    runs: [heuristic@dev, heuristic-base-rates@dev]
+  - title: test
+    baseline: heuristic@test
+    runs: [heuristic@test, heuristic-base-rates@test]

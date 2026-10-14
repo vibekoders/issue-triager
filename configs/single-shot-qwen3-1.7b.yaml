@@ -1,0 +1,2 @@
+# SingleShot with a small local model.
+model: ollama:qwen3:1.7b

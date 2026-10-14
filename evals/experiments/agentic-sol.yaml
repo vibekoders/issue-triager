@@ -1,0 +1,44 @@
+# Experiment: the agentic strategies of final-comparison again, with Sol
+# instead of the profile's cheap LLM (Sol, not Terra: same input price,
+# cheaper output; see docs/model-pricing.md), and single_shot on Sol as the
+# control: does Sol help the agentic strategies more than one plain call?
+# The model is literal, so the profile and --model llm=... don't change it.
+# All steps are optional (--include-optional): they are not part of the
+# default plan or the cost estimates in docs/costs.md.
+# Step keys: see README.md in this directory.
+
+id: agentic-sol
+title: agentic strategies, cheap LLM → Sol
+shows: what a larger model buys the strategies that use tools
+steps:
+  - id: final-agent-tools-sol
+    strategy: Agent
+    split: test
+    config: {model: azure:gpt-6-sol, max_turns: 8}
+    label: agent azure:gpt-6-sol, with tools
+    optional: true
+    baseline: final-agent-tools
+  - id: final-draft-verify-sol
+    strategy: DraftVerify
+    split: test
+    config: {decision_model: "{decision}", verifier_model: azure:gpt-6-sol, thresholds: {accept: 0.8}, max_turns: 8}
+    label: draft_verify {decision} + azure:gpt-6-sol, accept 0.8
+    optional: true
+    baseline: final-draft-verify
+  - id: final-single-shot-sol
+    strategy: SingleShot
+    split: test
+    config: {model: azure:gpt-6-sol}
+    label: single_shot azure:gpt-6-sol
+    optional: true
+    baseline: final-single-shot
+compare:
+  - title: agent, cheap LLM → Sol
+    baseline: final-agent-tools
+    runs: [final-agent-tools, final-agent-tools-sol]
+  - title: draft_verify, cheap LLM → Sol
+    baseline: final-draft-verify
+    runs: [final-draft-verify, final-draft-verify-sol]
+  - title: single_shot, cheap LLM → Sol (control)
+    baseline: final-single-shot
+    runs: [final-single-shot, final-single-shot-sol]

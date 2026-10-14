@@ -1,0 +1,2894 @@
+# yaml-language-server: $schema=kubernetes-dev-20_schema.json
+# dataset-metadata: {"build_date": "2026-10-14", "cases": 20, "keep_unknown_body": false, "limit": 20, "min_per_stratum": 2, "repo": "kubernetes/kubernetes", "since": null, "source": "data/normalized/kubernetes.jsonl", "source_records": 3000, "source_sha256": "f5cb2e140aaabc59a518929a07b7eb5f4b3f8ec08c6c22658e3466d358c4e574", "split": "dev", "split_rule": "sha256('kubernetes/kubernetes#<number>')[:16] < 0.8 * 2**64 -> dev", "stratify": "kind", "triager_verified": false}
+name: kubernetes-dev-20
+cases:
+- name: kubernetes-128871
+  inputs:
+    issue:
+      number: 128871
+      title: '[Flaking Test] integration TestExternalJWTSigningAndAuth'
+      body: "### Which jobs are flaking?\n\nhttps://storage.googleapis.com/k8s-triage/index.html?text=TestExternalJWTSigningAndAuth\n\
+        \n- https://prow.k8s.io/view/gs/kubernetes-ci-logs/logs/ci-kubernetes-integration-master/1858425874718658560\n\n###\
+        \ Which tests are flaking?\n\n  TestExternalJWTSigningAndAuth/change_of_supported_keys_picked_up_after_periodic_sync\n\
+        \n### Since when has it been flaking?\n\n11/09-10\n\n### Testgrid link\n\nhttps://testgrid.k8s.io/sig-release-master-blocking#integration-master\n\
+        \n### Reason for failure (if possible)\n\n```\n-]poststarthook/priority-and-fairness-config-producer failed: not finished\n\
+        \  \tType:               \"Dangling\",\n- \tStatus:             \"\",\n+ \tStatus:             \"False\",\n- \tLastTransitionTime:\
+        \ v1.Time{},\n+ \tLastTransitionTime: v1.Time{Time: s\"2024-11-18 09:28:53.78921237 +0000 UTC m=+5.328431288\"},\n\
+        - \tReason:             \"\",\n+ \tReason:             \"Found\",\n- \tMessage:            \"\",\n+ \tMessage:   \
+        \         `This FlowSchema references the PriorityLevelConfiguration object named \"system\" and it exists`,\n  }\n\
+        \  \tType:               \"Dangling\",\n- \tStatus:             \"\",\n+ \tStatus:             \"False\",\n- \tLastTransitionTime:\
+        \ v1.Time{},\n+ \tLastTransitionTime: v1.Time{Time: s\"2024-11-18 09:28:53.796115633 +0000 UTC m=+5.335334551\"},\n\
+        - \tReason:             \"\",\n+ \tReason:             \"Found\",\n- \tMessage:            \"\",\n+ \tMessage:   \
+        \         `This FlowSchema references the PriorityLevelConfiguration object named \"node-high\" and it exists`,\n\
+        \  }\n```\n\n### Anything else we need to know?\n\n_No response_\n\n### Relevant SIG(s)"
+      author_association: MEMBER
+      created_at: '2024-11-20T01:52:20Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: &repo_labels
+      - name: area/HA
+        description: null
+      - name: area/admin
+        description: Indicates an issue on admin area.
+      - name: area/admission-control
+        description: null
+      - name: area/api
+        description: Indicates an issue on api area.
+      - name: area/api-validation
+        description: Issues or PRs related to API validation and declarative validation
+      - name: area/apiserver
+        description: null
+      - name: area/app-lifecycle
+        description: null
+      - name: area/artifacts
+        description: Issues or PRs related to the hosting of release artifacts for subprojects
+      - name: area/audit
+        description: null
+      - name: area/batch
+        description: null
+      - name: area/build-release
+        description: null
+      - name: area/cadvisor
+        description: null
+      - name: area/client-libraries
+        description: null
+      - name: area/cloudprovider
+        description: null
+      - name: area/code-generation
+        description: null
+      - name: area/code-organization
+        description: Issues or PRs related to kubernetes code organization
+      - name: area/code-organization/future-dependencies
+        description: Issues related to upcoming dependency or golang updates
+      - name: area/community-meeting
+        description: Issues or PRs that should potentially be discussed in a Kubernetes community meeting.
+      - name: area/configmap-api
+        description: null
+      - name: area/conformance
+        description: Issues or PRs related to kubernetes conformance tests
+      - name: area/controller-manager
+        description: null
+      - name: area/custom-resources
+        description: null
+      - name: area/declarative-configuration
+        description: null
+      - name: area/deflake
+        description: Issues or PRs related to deflaking kubernetes tests
+      - name: area/dependency
+        description: Issues or PRs related to dependency changes
+      - name: area/dns
+        description: null
+      - name: area/docker
+        description: null
+      - name: area/downward-api
+        description: null
+      - name: area/e2e-test-framework
+        description: Issues or PRs related to refactoring the kubernetes e2e test framework
+      - name: area/ecosystem
+        description: null
+      - name: area/etcd
+        description: null
+      - name: area/example
+        description: null
+      - name: area/example/cassandra
+        description: null
+      - name: area/extensibility
+        description: null
+      - name: area/federation
+        description: null
+      - name: area/hw-accelerators
+        description: null
+      - name: area/images-registry
+        description: null
+      - name: area/ingress
+        description: null
+      - name: area/introspection
+        description: null
+      - name: area/ipv6
+        description: null
+      - name: area/ipvs
+        description: null
+      - name: area/isolation
+        description: null
+      - name: area/kro
+        description: Issues or PRs related to KRO
+      - name: area/kube-proxy
+        description: null
+      - name: area/kubeadm
+        description: null
+      - name: area/kubectl
+        description: null
+      - name: area/kubelet
+        description: null
+      - name: area/kubelet-api
+        description: null
+      - name: area/logging
+        description: null
+      - name: area/monitoring
+        description: null
+      - name: area/network-policy
+        description: Issues or PRs related to Network Policy subproject
+      - name: area/node-e2e
+        description: null
+      - name: area/node-lifecycle
+        description: Issues or PRs related to Node lifecycle
+      - name: area/nodecontroller
+        description: null
+      - name: area/os/coreos
+        description: null
+      - name: area/os/fedora
+        description: null
+      - name: area/os/ubuntu
+        description: null
+      - name: area/platform/gce
+        description: null
+      - name: area/platform/mesos
+        description: null
+      - name: area/platform/vagrant
+        description: null
+      - name: area/pod-lifecycle
+        description: Issues or PRs related to Pod lifecycle
+      - name: area/provider/aws
+        description: Issues or PRs related to aws provider
+      - name: area/provider/azure
+        description: Issues or PRs related to azure provider
+      - name: area/provider/digitalocean
+        description: Issues or PRs related to digitalocean provider
+      - name: area/provider/gcp
+        description: Issues or PRs related to gcp provider
+      - name: area/provider/ibmcloud
+        description: Issues or PRs related to ibmcloud provider
+      - name: area/provider/openstack
+        description: Issues or PRs related to openstack provider
+      - name: area/provider/vmware
+        description: Issues or PRs related to vmware provider
+      - name: area/release-eng
+        description: Issues or PRs related to the Release Engineering subproject
+      - name: area/reliability
+        description: null
+      - name: area/rkt
+        description: null
+      - name: area/secret-api
+        description: null
+      - name: area/security
+        description: null
+      - name: area/stable-metrics
+        description: Issues or PRs involving stable metrics
+      - name: area/stateful-apps
+        description: null
+      - name: area/swagger
+        description: null
+      - name: area/system-requirement
+        description: null
+      - name: area/teardown
+        description: null
+      - name: area/test
+        description: null
+      - name: area/test-infra
+        description: null
+      - name: area/ui
+        description: null
+      - name: area/upgrade
+        description: null
+      - name: area/usability
+        description: null
+      - name: area/workload-api/cronjob
+        description: null
+      - name: area/workload-api/daemonset
+        description: null
+      - name: area/workload-api/deployment
+        description: null
+      - name: area/workload-api/job
+        description: null
+      - name: area/workload-api/replicaset
+        description: null
+      - name: kind/api-change
+        description: Categorizes issue or PR as related to adding, removing, or otherwise changing an API
+      - name: kind/bug
+        description: Categorizes issue or PR as related to a bug.
+      - name: kind/cleanup
+        description: Categorizes issue or PR as related to cleaning up code, process, or technical debt.
+      - name: kind/dependency
+        description: Categorizes issue or PR as related to a dependency update.
+      - name: kind/deprecation
+        description: Categorizes issue or PR as related to a feature/enhancement marked for deprecation.
+      - name: kind/design
+        description: Categorizes issue or PR as related to design.
+      - name: kind/documentation
+        description: Categorizes issue or PR as related to documentation.
+      - name: kind/failing-test
+        description: Categorizes issue or PR as related to a consistently or frequently failing test.
+      - name: kind/feature
+        description: Categorizes issue or PR as related to a new feature.
+      - name: kind/flake
+        description: Categorizes issue or PR as related to a flaky test.
+      - name: kind/regression
+        description: Categorizes issue or PR as related to a regression from a prior release.
+      - name: kind/support
+        description: Categorizes issue or PR as a support question.
+      - name: priority/awaiting-more-evidence
+        description: Lowest priority. Possibly useful, but not yet enough support to actually get it done.
+      - name: priority/backlog
+        description: Higher priority than priority/awaiting-more-evidence.
+      - name: priority/critical-urgent
+        description: Highest priority. Must be actively worked on as someone's top priority right now.
+      - name: priority/important-longterm
+        description: Important over the long term, but may not be staffed and/or may need multiple releases to complete.
+      - name: priority/important-soon
+        description: Must be staffed and worked on either currently, or very soon, ideally in time for the next release.
+      - name: sig/api-machinery
+        description: Categorizes an issue or PR as relevant to SIG API Machinery.
+      - name: sig/apps
+        description: Categorizes an issue or PR as relevant to SIG Apps.
+      - name: sig/architecture
+        description: Categorizes an issue or PR as relevant to SIG Architecture.
+      - name: sig/auth
+        description: Categorizes an issue or PR as relevant to SIG Auth.
+      - name: sig/autoscaling
+        description: Categorizes an issue or PR as relevant to SIG Autoscaling.
+      - name: sig/cli
+        description: Categorizes an issue or PR as relevant to SIG CLI.
+      - name: sig/cloud-provider
+        description: Categorizes an issue or PR as relevant to SIG Cloud Provider.
+      - name: sig/cluster-lifecycle
+        description: Categorizes an issue or PR as relevant to SIG Cluster Lifecycle.
+      - name: sig/contributor-experience
+        description: Categorizes an issue or PR as relevant to SIG Contributor Experience.
+      - name: sig/docs
+        description: Categorizes an issue or PR as relevant to SIG Docs.
+      - name: sig/etcd
+        description: Categorizes an issue or PR as relevant to SIG Etcd.
+      - name: sig/instrumentation
+        description: Categorizes an issue or PR as relevant to SIG Instrumentation.
+      - name: sig/k8s-infra
+        description: Categorizes an issue or PR as relevant to SIG K8s Infra.
+      - name: sig/multicluster
+        description: Categorizes an issue or PR as relevant to SIG Multicluster.
+      - name: sig/network
+        description: Categorizes an issue or PR as relevant to SIG Network.
+      - name: sig/node
+        description: Categorizes an issue or PR as relevant to SIG Node.
+      - name: sig/release
+        description: Categorizes an issue or PR as relevant to SIG Release.
+      - name: sig/scalability
+        description: Categorizes an issue or PR as relevant to SIG Scalability.
+      - name: sig/scheduling
+        description: Categorizes an issue or PR as relevant to SIG Scheduling.
+      - name: sig/security
+        description: Categorizes an issue or PR as relevant to SIG Security.
+      - name: sig/service-catalog
+        description: Categorizes an issue or PR as relevant to SIG Service Catalog.
+      - name: sig/storage
+        description: Categorizes an issue or PR as relevant to SIG Storage.
+      - name: sig/testing
+        description: Categorizes an issue or PR as relevant to SIG Testing.
+      - name: sig/ui
+        description: Categorizes an issue or PR as relevant to SIG UI.
+      - name: sig/usability
+        description: Categorizes an issue or PR as relevant to SIG Usability.
+      - name: sig/windows
+        description: Categorizes an issue or PR as relevant to SIG Windows.
+      - name: triage/accepted
+        description: Indicates an issue or PR is ready to be actively worked on.
+      - name: triage/duplicate
+        description: Indicates an issue is a duplicate of other open issue.
+      - name: triage/needs-information
+        description: Indicates an issue needs more information in order to work on it.
+      - name: triage/not-reproducible
+        description: Indicates an issue can not be reproduced as described.
+      - name: triage/unresolved
+        description: Indicates an issue that can not or will not be resolved.
+      latest_release: v1.31.2
+      as_of: '2024-11-20T01:52:20Z'
+  metadata:
+    created_at: '2024-11-20T01:52:20Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2024-11-25T19:19:00Z'
+    closed_by: k8s-ci-robot
+    closed_by_bot: true
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/flake
+    - priority/important-soon
+    - sig/auth
+    - triage/accepted
+    label_provenance:
+      kind/flake: author
+      priority/important-soon: triager
+      sig/auth: author
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: false
+    comments: 5
+    participants: 6
+    reactions_plus_one: 0
+    milestone: v1.32
+    template: flaking-test
+    locked_reason: null
+    fixing_prs:
+    - 128966
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      cc @HarshalNeelkamal
+
+      I don't think the priority and fairness logs have anything to do with the failure, those show up in other test runs as well
+    - |
+      Flake is:
+      ```
+      TestExternalJWTSigningAndAuth/change_of_supported_keys_picked_up_after_periodic_sync
+          external_jwt_signer_test.go:230: Expected Authentication to succeed, got [invalid bearer token, square/go-jose: error in cryptographic primitive]
+      ```
+    - fix in https://github.com/kubernetes/kubernetes/pull/128966
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - flake
+    area:
+    - sig/auth
+    severity: important_soon
+    is_regression: false
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-107415
+  inputs:
+    issue:
+      number: 107415
+      title: kube-scheduler panics on malformed label
+      body: "### What happened?\n\nA deployment was inadvertently created with a malformed label in `requiredAffinityTerms`\
+        \ which appears to have caused the kube-scheduler to panic and crash.\n\nError from kube-scheduler pods: \n```\nE0107\
+        \ 05:56:44.099432       1 scheduling_queue.go:547] Error getting label selectors for pod: REDACTED.\nE0107 05:56:44.099573\
+        \       1 runtime.go:78] Observed a panic: \"invalid memory address or nil pointer dereference\" (runtime error: invalid\
+        \ memory address or nil pointer dereference)\ngoroutine 353 [running]:\nk8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/runtime.logPanic(0x1b0f760,\
+        \ 0x2d9c290)\n            /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/runtime/runtime.go:74\
+        \ +0x95\nk8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/runtime.HandleCrash(0x0, 0x0, 0x0)\n            /workspace/src/k8s.io/kubernetes/_output/dockerized/go/src/k8s.io/kubernetes/vendor/k8s.io/apimachinery/pkg/util/runtime/runtime.go:48\
+        \ +0x89\npanic(0x1b0f760, 0x2d9c290)\n            /usr/local/go/src/runtime/panic.go:969 +0x1b9\n```\n\nEvents from\
+        \ REDACTED pod:\n```\nEvents:\n  Type     Reason             Age    From                Message\n  ----     ------\
+        \             ----   ----                -------\n  Warning  FailedScheduling   4m44s  default-scheduler   0/40 nodes\
+        \ are available: 40 parsing pod: requiredAffinityTerms: invalid label value: \"-api-gateway-mockservice\": at key:\
+        \ \"release\": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.', and must\
+        \ start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for validation\
+        \ is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?').\n  Warning  FailedScheduling   4m44s  default-scheduler   0/40\
+        \ nodes are available: 40 parsing pod: requiredAffinityTerms: invalid label value: \"-api-gateway-mockservice\": at\
+        \ key: \"release\": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.',\
+        \ and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for\
+        \ validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?').\n  Warning  FailedScheduling   110s   default-scheduler\
+        \   0/40 nodes are available: 40 parsing pod: requiredAffinityTerms: invalid label value: \"-api-gateway-mockservice\"\
+        : at key: \"release\": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.',\
+        \ and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for\
+        \ validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?').\n  Warning  FailedScheduling   51s    default-scheduler\
+        \   0/40 nodes are available: 40 parsing pod: requiredAffinityTerms: invalid label value: \"-api-gateway-mockservice\"\
+        : at key: \"release\": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.',\
+        \ and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for\
+        \ validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?').\n  Normal   NotTriggerScaleUp  4m40s  cluster-autoscaler\
+        \  pod didn't trigger scale-up: 51 parsing pod: requiredAffinityTerms: invalid label value: \"-api-gateway-mockservice\"\
+        : at key: \"release\": a valid label must be an empty string or consist of alphanumeric characters, '-', '_' or '.',\
+        \ and must start and end with an alphanumeric character (e.g. 'MyValue',  or 'my_value',  or '12345', regex used for\
+        \ validation is '(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')\n ```\n\n### What did you expect to happen?\n\nkube-scheduler\
+        \ should not panic.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\nSubmit a deployment\
+        \ with a malformed label value.\n\n### Anything else we need to know?\n\n_No response_\n\n### Kubernetes version\n\
+        \n<details>\n\n```console\n$ kubectl version\nClient Version: version.Info{Major:\"1\", Minor:\"23\", GitVersion:\"\
+        v1.23.1\", GitCommit:\"86ec240af8cbd1b60bcc4c03c20da9b98005b92e\", GitTreeState:\"clean\", BuildDate:\"2021-12-16T11:33:37Z\"\
+        , GoVersion:\"go1.17.5\", Compiler:\"gc\", Platform:\"darwin/amd64\"}\nServer Version: version.Info{Major:\"1\", Minor:\"\
+        20\", GitVersion:\"v1.20.13\", GitCommit:\"2444b3347a2c45eb965b182fb836e1f51dc61b70\", GitTreeState:\"clean\", BuildDate:\"\
+        2021-11-17T13:00:29Z\", GoVersion:\"go1.15.15\", Compiler:\"gc\", Platform:\"linux/amd64\"}\nWARNING: version difference\
+        \ between client (1.23) and server (1.20) exceeds the supported minor version skew of +/-1\n```\n\n</details>\n\n\
+        ### Cloud provider\n\n<details>\nAWS\n</details>\n\n### OS version\n\n<details>\n\n```console\n$ cat /etc/os-release\n\
+        NAME=\"CentOS Linux\"\nVERSION=\"7 (Core)\"\nID=\"centos\"\nID_LIKE=\"rhel fedora\"\nVERSION_ID=\"7\"\nPRETTY_NAME=\"\
+        CentOS Linux 7 (Core)\"\nANSI_COLOR=\"0;31\"\nCPE_NAME=\"cpe:/o:centos:centos:7\"\nHOME_URL=\"https://www.centos.org/\"\
+        \nBUG_REPORT_URL=\"https://bugs.centos.org/\"\n\nCENTOS_MANTISBT_PROJECT=\"CentOS-7\"\nCENTOS_MANTISBT_PROJECT_VERSION=\"\
+        7\"\nREDHAT_SUPPORT_PRODUCT=\"centos\"\nREDHAT_SUPPORT_PRODUCT_VERSION=\"7\"\n$ uname -a\nLinux ip-10-117-7-107.eu-west-1.compute.internal\
+        \ 3.10.0-1160.45.1.el7.x86_64 #1 SMP Wed Oct 13 17:20:51 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux\n```\n\n</details>\n\
+        \n### Install tools\n\n<details>\n\n</details>\n\n### Container runtime (CRI) and and version (if applicable)\n\n\
+        <details>\ncri-o\n</details>\n\n### Related plugins (CNI, CSI, ...) and versions (if applicable)\n\n<details>\n\n\
+        </details>"
+      author_association: NONE
+      created_at: '2022-01-07T21:13:46Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.23.1
+      as_of: '2022-01-07T21:13:46Z'
+  metadata:
+    created_at: '2022-01-07T21:13:46Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2022-08-22T15:10:59Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: true
+    lifecycle:
+    - lifecycle/stale
+    labels:
+    - kind/bug
+    - lifecycle/stale
+    - sig/api-machinery
+    - sig/scheduling
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      sig/api-machinery: triager
+      sig/scheduling: triager
+      triage/accepted: triager
+    triager_verified: false
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 26
+    participants: 9
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 113699
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - /assign
+    - Would you mind giving us a deployment demo that can cause panic and telling us what k8s version you use?
+    - |-
+      The first error log is from here:
+      https://github.com/kubernetes/kubernetes/blob/v1.20.13/pkg/scheduler/internal/queue/scheduling_queue.go#L547
+
+      When `LabelSelectorAsSelector` returns error, `selector` will be nil:
+      https://github.com/kubernetes/kubernetes/blob/v1.20.13/staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/helpers.go#L34-L70
+
+      Returned `selector` is passed to `util.PodMatchesTermsNamespaceAndSelector` and `util.PodMatchesTermsNamespaceAndSelector` accesses `selector.Matches`. I think `invalid memory address or nil pointer dereference` here:
+      https://github.com/kubernetes/kubernetes/blob/v1.20.13/pkg/scheduler/util/topologies.go#L45
+
+      If my thoughts above are correct, this bug still exists on v1.20.14 (latest version of v1.20).
+    - "@sanposhiho \n\nIf your thoughts are right, this bug still exists in the newest version in the master branch. PTAL\
+      \ here https://github.com/kubernetes/kubernetes/blob/master/pkg/scheduler/framework/types.go#L201-L206\n\nI would like\
+      \ to make a PR to add an extra nil check. But maybe we should add validation to check the selector when people apply\
+      \ a config."
+    - |-
+      > this bug still exists in the newest version in the master branch. PTAL here
+
+      This `AffinityTerm` struct is created by this `newAffinityTerm` func and `newAffinityTerm` correctly handles error from `LabelSelectorAsSelector`.  The cause of this bug in v1.20 is that we pass `selector` to `PodMatchesTermsNamespaceAndSelector` without handling an error, even though `LabelSelectorAsSelector` func returns nil as `selector` when it returns an error.
+      https://github.com/kubernetes/kubernetes/blob/master/pkg/scheduler/framework/types.go#L253
+      So, I think this bug doesn't exist on latest master branch. What do you think
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/api-machinery
+    - sig/scheduling
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-136035
+  inputs:
+    issue:
+      number: 136035
+      title: '[client-go] add a pod-logs example'
+      body: |-
+        **What would you like to be added?** I'd like to add a new pod-logs example to `staging/src/k8s.io/client-go/examples`. It's a simple script that lists pods across namespaces and streams the last few lines of their container logs to the terminal.
+
+        **Why is this needed?** I noticed we don't actually have a basic "how to get pod logs" example. It's such a common thing for people to do, but there isn't a dedicated example yet!
+
+        I've based this on the official [Python client's logs example](https://github.com/kubernetes-client/python/blob/master/examples/pod_logs.py).
+      author_association: NONE
+      created_at: '2026-01-05T19:49:44Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.35.0
+      as_of: '2026-01-05T19:49:44Z'
+  metadata:
+    created_at: '2026-01-05T19:49:44Z'
+    state: OPEN
+    state_reason: null
+    closed_at: null
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/documentation
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/documentation: triager
+      sig/api-machinery: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 5
+    participants: 5
+    reactions_plus_one: 0
+    milestone: null
+    template: enhancement
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      sounds reasonable to me
+      /triage accepted
+    - I can work on this piece
+    - |-
+      /assign
+
+      I am picking this back up via #138333.
+    - |-
+      /unassign
+
+      Backing off this issue after re-reading the maintainer feedback on #138333.
+    close_outcome: open
+  expected_output:
+    kind:
+    - docs
+    area:
+    - sig/api-machinery
+    severity: null
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: open
+- name: kubernetes-135558
+  inputs:
+    issue:
+      number: 135558
+      title: Make credential plugin policy/allowlist settable with `kubectl kuberc set`
+      body: |-
+        ### What would you like to be added?
+
+        A new alpha command, `kubectl alpha kuberc set` has been added, which modifies the contents of the `kuberc` file. We should modify the interface to `kubectl alpha kuberc set` to make it possible to set the `credentialPluginPolicy` and `credentialPluginAllowlist` fields (added in 1.35 as an extension to KEP-3104) from the command line.
+
+        ### Why is this needed?
+
+        This is needed in order to further reduce the friction for end-users in securing the `kubectl` client. `credentialPluginPolicy` and `credentialPluginAllowlist` are security knobs, and it would be great to have a simple cli one-liner to turn them on, rather than requiring the user to modify and/or create a new configuration file with which they may not be familiar.  In addition, the appropriate values may depend on provider configurations, but cloud providers can likewise provide CLI one-liners to allow their plugins but no others.
+      author_association: CONTRIBUTOR
+      created_at: '2025-12-02T19:58:22Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.34.2
+      as_of: '2025-12-02T19:58:22Z'
+  metadata:
+    created_at: '2025-12-02T19:58:22Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2026-03-12T17:19:43Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/feature
+    - priority/important-longterm
+    - sig/auth
+    - sig/cli
+    - triage/accepted
+    label_provenance:
+      kind/feature: author
+      priority/important-longterm: triager
+      sig/auth: triager
+      sig/cli: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 4
+    participants: 7
+    reactions_plus_one: 0
+    milestone: v1.36
+    template: enhancement
+    locked_reason: null
+    fixing_prs:
+    - 137300
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - /sig cli
+    - |-
+      /triage accepted
+      /milestone v1.36
+    - /priority important-longterm
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - feature
+    area:
+    - sig/auth
+    - sig/cli
+    severity: important_longterm
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-119601
+  inputs:
+    issue:
+      number: 119601
+      title: Multi-numa periodics are not working
+      body: |-
+        ### Which jobs are failing?
+
+        See https://github.com/kubernetes/test-infra/pull/29717#issuecomment-1584967574
+
+        ### Which tests are failing?
+
+        - Topology manager: runs green, but with zero tests: https://testgrid.k8s.io/sig-node-kubelet#kubelet-serial-gce-e2e-topology-manager
+        - CPU manager fails on initialization: https://testgrid.k8s.io/sig-node-kubelet#kubelet-serial-gce-e2e-cpu-manager
+        - Memory manager fails on initialization as well: https://testgrid.k8s.io/sig-node-kubelet#kubelet-serial-gce-e2e-memory-manager
+
+        ### Since when has it been failing?
+
+        Since creation. Those are new periodics, pull jobs are working fine. First attempt to resolve it didn't succeeded so I am creating a bug to track it explicitly
+
+        ### Testgrid link
+
+        _No response_
+
+        ### Reason for failure (if possible)
+
+        _No response_
+
+        ### Anything else we need to know?
+
+        _No response_
+
+        ### Relevant SIG(s)
+      author_association: MEMBER
+      created_at: '2023-07-26T21:17:34Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.27.4
+      as_of: '2023-07-26T21:17:34Z'
+  metadata:
+    created_at: '2023-07-26T21:17:34Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2023-09-07T13:26:59Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/failing-test
+    - priority/important-soon
+    - sig/node
+    - triage/accepted
+    label_provenance:
+      kind/failing-test: author
+      priority/important-soon: triager
+      sig/node: author
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: false
+    comments: 10
+    participants: 7
+    reactions_plus_one: 0
+    milestone: null
+    template: failing-test
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      Thanks @SergeyKanzhelev for creating an issue to track this. I will further look into this.
+
+      /assign
+      /triage accepted
+      /priority important-soon
+    - |-
+      For CPU manager test, node is not ready. This is the NodeCondition object reported in the logs:
+      ```
+      NodeCondition{
+          Type:Ready,
+          Status:False,
+          LastHeartbeatTime:2023-07-26 18:10:51 +0000 UTC,
+          LastTransitionTime:2023-07-26 18:10:41 +0000 UTC,
+          Reason:KubeletNotReady,
+          Message:"container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:Network plugin returns error: cni plugin not initialized",
+      },
+      ```
+
+      It also seems to be the case for memory manager.
+    - "\n> For CPU manager test, node is not ready. This is the NodeCondition object reported in the logs:\n> \n> ```\n> NodeCondition{\n\
+      >     Type:Ready,\n>     Status:False,\n>     LastHeartbeatTime:2023-07-26 18:10:51 +0000 UTC,\n>     LastTransitionTime:2023-07-26\
+      \ 18:10:41 +0000 UTC,\n>     Reason:KubeletNotReady,\n>     Message:\"container runtime network not ready: NetworkReady=false\
+      \ reason:NetworkPluginNotReady message:Network plugin returns error: cni plugin not initialized\",\n> },\n> ```\n> \n\
+      > It also seems to be the case for memory manager.\n\nThanks Mike, yeah I noticed this and thought the issue was due\
+      \ to mis-configuration.\n\n> can it be unspecified cgroup driver?\n> \n> I cannot find anything strange in logs from\
+      \ a quick look.\n\nI thought so too and added additional node args in https://github.com/kubernetes/test-infra/pull/30072\
+      \ but that didn't seem to help. Note that the cgroup driver is specified now.\n\nAlso, I just found that we don't have\
+      \ results for presubmit jobs with the new multi-NUMA setting:\nhttps://testgrid.k8s.io/sig-node-presubmits#pr-kubelet-serial-gce-e2e-cpu-manager\n\
+      https://testgrid.k8s.io/sig-node-presubmits#pr-kubelet-serial-gce-e2e-memory-manager\nhttps://testgrid.k8s.io/sig-node-presubmits#pr-kubelet-serial-gce-e2e-topology-manager\n\
+      \nThese jobs are disabled by default and perhaps no one executed them yet.\n\nI can't help but notice that the common\
+      \ demonimnator between these failing jobs is the image-config-file: [image-config-serial-multi-numa.yaml](https://github.com/kubernetes/test-infra/blob/master/jobs/e2e_node/image-config-serial-multi-numa.yaml)\
+      \ and could be the root cause here.\n\nNext steps:\n\n1. Create a dummy PR to test the above presubmit jobs to determine\
+      \ if they are failing as well.\n2. Update the image config file or replace it with the older one to narrow down the\
+      \ cause of the issue.\n\nLet me know if this seems reasonable and if you have more ideas.\n \n"
+    - |-
+      - [X] 1. Create a dummy PR to test the above presubmit jobs to determine if they are failing as well.
+      [PR ](https://github.com/kubernetes/kubernetes/pull/119655) was created and shows that the multi-numa presubmit jobs for cpu manager and memory manager jobs are failing as well. Topology Manager job passes (probably because tests are skipped) and that is consistent with what we see in case of periodic jobs. I don't see build logs for these jobs and the also noticed that the test results are not stored in testgrid. On inspection of job history we get following:
+      ```
+      failed to get job history: failed to locate build data: failed to read pr-logs/directory/pull-kubernetes-node-kubelet-serial-memory-manager/latest-build.txt: creating reader for object pr-logs/directory/pull-kubernetes-node-kubelet-serial-memory-manager/latest-build.txt: storage: object doesn't exist
+      ```
+      This would need some investigation.
+      - [X] 2. Update the image config file or replace it with the older one to narrow down the cause of the issue.
+      https://github.com/kubernetes/test-infra/pull/30249
+    - '@SergeyKanzhelev Please take a look at this [PR](https://github.com/kubernetes/test-infra/pull/30249/files) that updates
+      the machine specified in the image-config-serial-multi-numa.yaml image config file.'
+    close_outcome: completed_other
+  expected_output:
+    kind:
+    - failing_test
+    area:
+    - sig/node
+    severity: important_soon
+    is_regression: false
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: completed_other
+- name: kubernetes-108806
+  inputs:
+    issue:
+      number: 108806
+      title: 'Cleanup: kube-proxy internal naming'
+      body: |-
+        We have sort of a mish-mash of "service" and "servicePort" and similar.
+
+        We should think about changing ALL of the places that actually relate to a service-port (a specific port of a service, not the whole service) and rename them to some new term that means "service port". E.g. "svcpt" or "spt" or "sport".
+
+        See https://github.com/kubernetes/kubernetes/pull/106497/commits/8fffae321d66487f776922e0c313b33af7bf27e3 in pkg/proxy/iptables/proxier.go and friends.  e.g. `info.serviceNameString` -> `info.svcptNameString` ?
+      author_association: MEMBER
+      created_at: '2022-03-18T18:36:30Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.23.5
+      as_of: '2022-03-18T18:36:30Z'
+  metadata:
+    created_at: '2022-03-18T18:36:30Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2022-11-03T01:21:07Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - good first issue
+    - help wanted
+    - kind/cleanup
+    - sig/network
+    - triage/accepted
+    label_provenance:
+      kind/cleanup: author
+      sig/network: author
+      triage/accepted: author
+    triager_verified: false
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 14
+    participants: 10
+    reactions_plus_one: 0
+    milestone: null
+    template: null
+    locked_reason: null
+    fixing_prs:
+    - 113277
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      I would like to take this one.
+
+      /assign
+    - /assign
+    - ' I am ready to  work on it , Can you assign this to me?'
+    - /assign
+    - |
+      /assign
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - cleanup
+    area:
+    - sig/network
+    severity: null
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-121699
+  inputs:
+    issue:
+      number: 121699
+      title: 'How to access app  in k8s cluster by aggregator apiservice with Authorization header '
+      body: |-
+        I deployed a third-party web application in the k8s cluster with deployment+service. The web application mainly provides login verification api  and other web service api. After calling the login api, Bearer token will be responsed, and be set into Authorization Bearer token before calling other web service api. It works well when requests are from k8s cluster inside.
+
+        This k8s cluster has a public IP, but strict firewall rules and security group rules are set up. Only port 6443 is exposed to the public network, and additional ports are not allowed. I am wondering if there is any way to access the web app in the cluster through the public IP+6443 port of the k8s cluster.
+
+        I found the k8s aggregator apiservice. After creating the apiservice and pointing it to my web service,  running  `curl -X POST --cacert ./ca.crt --cert ./client.crt --key . /client.key -H "contentType: application/json" -d '{username: xx, password: yy}' https://ip:6443/api/v1/namespaces/default/services/my-svc:port-80/proxy/api/login` is success, and the Bearer token is responsed, but I run (`curl -X POST --cacert ./ca.crt - -cert ./client.crt --key ./client.key -H "contentType: application/json" -H '{Authorization: Bearer xxx}' https://ip:6443/api/v1/namespaces/default/services/my-svc:port-80/proxy/api/other-api`) to request other api, it returns 401 Unauthorized . I suspect that the header in request was intercepted or consumed by kube-apiserver, and was not passed to my web app.
+
+        Here is my question: 1. Is there any other way to access the applications in the cluster through the public IP + 6443 port of the k8s cluster? 2. How can I access the applications in the cluster without changing the firewall and security group rules or the third-party application source code, just using the Authorization Bearer toker header through kube-apiserver to complete the authentication?
+      author_association: NONE
+      created_at: '2023-11-02T14:07:32Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.28.3
+      as_of: '2023-11-02T14:07:32Z'
+  metadata:
+    created_at: '2023-11-02T14:07:32Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2023-11-02T15:06:39Z'
+    closed_by: k8s-ci-robot
+    closed_by_bot: true
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/support
+    - sig/api-machinery
+    - sig/auth
+    - triage/accepted
+    label_provenance:
+      kind/support: triager
+      sig/api-machinery: triager
+      sig/auth: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 3
+    participants: 4
+    reactions_plus_one: 0
+    milestone: null
+    template: null
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - "a better place to ask would be on the support channels. please see:\nhttps://git.k8s.io/kubernetes/SUPPORT.md\n\n/sig\
+      \ auth api-machinery\n/kind support\n/close "
+    - /triage accepted
+    close_outcome: invalid
+  expected_output:
+    kind:
+    - question
+    area:
+    - sig/api-machinery
+    - sig/auth
+    severity: null
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: invalid
+- name: kubernetes-138440
+  inputs:
+    issue:
+      number: 138440
+      title: '[Flaking test] kubetest.Up gce-master-scale-correctness'
+      body: |-
+        ### Which jobs are flaking?
+
+        sig-release-master-informing
+        - ci-kubernetes-e2e-gce-scale-correctness
+
+        ### Which tests are flaking?
+
+        kubetest.Up
+        fail in the beginning.  Probably infra related.
+
+        ### Since when has it been flaking?
+
+        [16/04/2026, 20:02:14](https://prow.k8s.io/view/gs/kubernetes-ci-logs/logs/ci-kubernetes-e2e-gce-scale-correctness/2044823579152879616)
+        [10/04/2026, 20:01:45](https://prow.k8s.io/view/gs/kubernetes-ci-logs/logs/ci-kubernetes-e2e-gce-scale-correctness/2042649136964046848)
+        [08/04/2026, 20:01:44](https://prow.k8s.io/view/gs/kubernetes-ci-logs/logs/ci-kubernetes-e2e-gce-scale-correctness/2041924353523716096)
+
+        ### Testgrid link
+
+        https://testgrid.k8s.io/sig-release-master-informing#gce-master-scale-correctness , https://storage.googleapis.com/k8s-triage/index.html?job=ci-kubernetes-e2e-gce-scale-correctness
+
+        ### Reason for failure (if possible)
+
+        `error during ./hack/e2e-internal/e2e-up.sh: exit status 1`
+
+        ```
+        ERROR: (gcloud.compute.instances.create) Could not fetch resource:
+        ---
+        code: ZONE_RESOURCE_POOL_EXHAUSTED_WITH_DETAILS
+        errorDetails:
+        - help:
+            links:
+            - description: Troubleshooting documentation
+              url: https://cloud.google.com/compute/docs/resource-error
+        - localizedMessage:
+            locale: en-US
+            message: A e2-standard-32 VM instance is currently unavailable in the us-east1-b
+              zone. Consider trying your request in the us-east1-c, us-east1-d zone(s), which
+              currently has capacity to accommodate your request. Alternatively, you can try
+              your request again with a different VM hardware configuration or at a later
+              time. For more information, see the troubleshooting documentation.
+        - errorInfo:
+            domain: compute.googleapis.com
+            metadatas:
+              attachment: ''
+              vmType: e2-standard-32
+              zone: us-east1-b
+              zonesAvailable: us-east1-c,us-east1-d
+            reason: resource_availability
+        message: The zone 'projects/k8s-infra-e2e-boskos-scale-30/zones/us-east1-b' does not
+          have enough resources available to fulfill the request.  'NULL:0/NULL:0/NULL:0 (state:STOCKOUT,
+          sub-state:STOCKOUT, resource type:compute)'.
+        ```
+
+        ### Anything else we need to know?
+
+        _No response_
+
+        ### Relevant SIG(s)
+      author_association: MEMBER
+      created_at: '2026-04-17T08:29:45Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.35.4
+      as_of: '2026-04-17T08:29:45Z'
+  metadata:
+    created_at: '2026-04-17T08:29:45Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2026-04-17T15:25:07Z'
+    closed_by: k8s-ci-robot
+    closed_by_bot: true
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/flake
+    - sig/scalability
+    - sig/testing
+    - triage/accepted
+    label_provenance:
+      kind/flake: author
+      sig/scalability: triager
+      sig/testing: author
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 7
+    participants: 4
+    reactions_plus_one: 0
+    milestone: null
+    template: flaking-test
+    locked_reason: null
+    fixing_prs:
+    - 36835
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      /sig scalability
+      I think this is a capacity issue in the region.
+    - I think the use of east-1 is arbitrary, central-1 would align with the rest of CI and probably has capacity.
+    - /triage accepted
+    - |-
+      /assign
+      filed https://github.com/kubernetes/test-infra/pull/36835
+    - |-
+      Failing more consistently - [sig-release-master-informing#gce-master-scale-correctness](https://testgrid.k8s.io/sig-release-master-informing#gce-master-scale-correctness)
+      [Triage](https://storage.googleapis.com/k8s-triage/index.html?job=ci-kubernetes-e2e-gce-scale-correctness%24)
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - flake
+    area:
+    - sig/scalability
+    - sig/testing
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-133388
+  inputs:
+    issue:
+      number: 133388
+      title: An object created through SSA with a non-nil deletion timestamp will not get deleted
+      body: |-
+        ### What happened?
+
+        ```
+        $ cat cm.yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          creationTimestamp: "2025-08-05T16:42:06Z"
+          deletionTimestamp: 2025-08-05T16:42:06Z
+          name: test
+          namespace: kubevirt-vm
+
+        $ k apply --server-side -f cm.yaml
+        Warning: Detected changes to resource test which is currently being deleted.
+        configmap/test serverside-applied
+
+        $ k get cm test  -oyaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          creationTimestamp: "2025-08-05T16:45:59Z"
+          deletionTimestamp: "2025-08-05T16:42:06Z"
+          name: test
+          namespace: kubevirt-vm
+          resourceVersion: "257079249"
+          uid: caa288c7-9b51-4365-a062-a4020d4bef93
+        ```
+
+        Then deleting it causes it to go, so I am guessing this is rooted in insufficient event handling in the GC controller, since only SSA allows to create objects with a non-nil deletion timestamp:
+        ```
+        $ k delete    -f cm.yaml
+        configmap "test" deleted
+
+        $ k get cm test  -oyaml
+        Error from server (NotFound): configmaps "test" not found
+        ```
+
+        ### What did you expect to happen?
+
+        The CM to immediately be gone
+
+        ### How can we reproduce it (as minimally and precisely as possible)?
+
+        See above
+
+        ### Anything else we need to know?
+
+        ### Kubernetes version
+
+        <details>
+
+        ```console
+        $ kubectl version
+        # paste output here
+        ```
+        $ kubectl version
+        Client Version: v1.33.3
+        Kustomize Version: v5.6.0
+        Server Version: v1.33.0
+        </details>
+
+        ### Cloud provider
+
+        <details>
+        none
+        </details>
+
+        ### OS version
+
+        <details>
+
+        ```console
+        # On Linux:
+        $ cat /etc/os-release
+        # paste output here
+        $ uname -a
+        # paste output here
+
+        # On Windows:
+        C:\> wmic os get Caption, Version, BuildNumber, OSArchitecture
+        # paste output here
+        ```
+        root@s51:~# cat /etc/os-release
+        NAME="Fedora Linux"
+        VERSION="41 (Server Edition)"
+        RELEASE_TYPE=stable
+        ID=fedora
+        VERSION_ID=41
+        VERSION_CODENAME=""
+        PLATFORM_ID="platform:f41"
+        PRETTY_NAME="Fedora Linux 41 (Server Edition)"
+        ANSI_COLOR="0;38;2;60;110;180"
+        LOGO=fedora-logo-icon
+        CPE_NAME="cpe:/o:fedoraproject:fedora:41"
+        HOME_URL="https://fedoraproject.org/"
+        DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/f41/"
+        SUPPORT_URL="https://ask.fedoraproject.org/"
+        BUG_REPORT_URL="https://bugzilla.redhat.com/"
+        REDHAT_BUGZILLA_PRODUCT="Fedora"
+        REDHAT_BUGZILLA_PRODUCT_VERSION=41
+        REDHAT_SUPPORT_PRODUCT="Fedora"
+        REDHAT_SUPPORT_PRODUCT_VERSION=41
+        SUPPORT_END=2025-12-15
+        VARIANT="Server Edition"
+        VARIANT_ID=server
+
+        root@s51:~# uname -r
+        6.14.6-200.fc41.x86_64
+        </details>
+
+        ### Install tools
+
+        <details>
+
+        </details>
+
+        ### Container runtime (CRI) and version (if applicable)
+
+        <details>
+
+        </details>
+
+        ### Related plugins (CNI, CSI, ...) and versions (if applicable)
+
+        <details>
+
+        </details>
+      author_association: MEMBER
+      created_at: '2025-08-05T16:48:47Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.33.3
+      as_of: '2025-08-05T16:48:47Z'
+  metadata:
+    created_at: '2025-08-05T16:48:47Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2026-05-08T20:27:28Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - priority/important-soon
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      priority/important-soon: triager
+      sig/api-machinery: author
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 4
+    participants: 5
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 138908
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - "/triage accepted\n/cc @yongruilin "
+    - cc @jpbetz for visibility
+    - |-
+      > only SSA allows to create objects with a non-nil deletion timestamp
+
+      Can we classify this as an SSA bug?  My intuition is that no one would ever what this behavior
+    - |-
+      I don't think it's actually SSA specific, I think it also applies to any create-via-patch of a resource that allows create on update.
+
+      Yes, it's a bug and we should just fix it.
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/api-machinery
+    severity: important_soon
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-120973
+  inputs:
+    issue:
+      number: 120973
+      title: 'CEL feedback: expressions within arrays are essentially unusable.'
+      body: |-
+        ### What happened?
+
+        1. I migrated a very complex, N^2, native OpenAPI validation to a trivial O(1) CEL expression
+        2. CRD is now rejected with max cost exceeded
+
+        ### What did you expect to happen?
+
+        I can migrate from a complex expression to a simple CEL expression
+
+        ### How can we reproduce it (as minimally and precisely as possible)?
+
+        What I am trying to do is represent protobuf in CRDs. In particular, the `oneOf` aspect of protobuf. Note that "oneOf" in proto is not the same as OpenAPI: it allows none set, as well.
+
+        This is tricky to represent in OpenAPI, especially if you have multiple `oneOf` for a single message or in nested messages. In this case, the best implementation I had found ends up being N^2:
+
+        <details>
+
+        ```yaml
+        oneOf:
+        - not:
+            anyOf:
+            - required:
+              - simple
+            - properties:
+                consistentHash:
+                  allOf:
+                  - oneOf:
+                    - not:
+                        anyOf:
+                        - required:
+                          - httpHeaderName
+                        - required:
+                          - httpCookie
+                        - required:
+                          - useSourceIp
+                        - required:
+                          - httpQueryParameterName
+                    - required:
+                      - httpHeaderName
+                    - required:
+                      - httpCookie
+                    - required:
+                      - useSourceIp
+                    - required:
+                      - httpQueryParameterName
+                  - oneOf:
+                    - not:
+                        anyOf:
+                        - required:
+                          - ringHash
+                        - required:
+                          - maglev
+                    - required:
+                      - ringHash
+                    - required:
+                      - maglev
+                  properties:
+                    minimumRingSize: {}
+              required:
+              - consistentHash
+        - required:
+          - simple
+        - properties:
+            consistentHash:
+              allOf:
+              - oneOf:
+                - not:
+                    anyOf:
+                    - required:
+                      - httpHeaderName
+                    - required:
+                      - httpCookie
+                    - required:
+                      - useSourceIp
+                    - required:
+                      - httpQueryParameterName
+                - required:
+                  - httpHeaderName
+                - required:
+                  - httpCookie
+                - required:
+                  - useSourceIp
+                - required:
+                  - httpQueryParameterName
+              - oneOf:
+                - not:
+                    anyOf:
+                    - required:
+                      - ringHash
+                    - required:
+                      - maglev
+                - required:
+                  - ringHash
+                - required:
+                  - maglev
+              properties:
+                minimumRingSize: {}
+          required:
+          - consistentHash
+        properties:
+          consistentHash:
+            properties:
+              httpCookie:
+                description: Hash based on HTTP cookie.
+                properties:
+                  name:
+                    description: Name of the cookie.
+                    type: string
+                  path:
+                    description: Path to set for the cookie.
+                    type: string
+                  ttl:
+                    description: Lifetime of the cookie.
+                    type: string
+                type: object
+              httpHeaderName:
+                description: Hash based on a specific HTTP header.
+                type: string
+              httpQueryParameterName:
+                description: Hash based on a specific HTTP query
+                  parameter.
+                type: string
+              maglev:
+                description: The Maglev load balancer implements
+                  consistent hashing to backend hosts.
+                properties:
+                  tableSize:
+                    description: The table size for Maglev hashing.
+                    type: integer
+                type: object
+              minimumRingSize:
+                description: Deprecated.
+                type: integer
+              ringHash:
+                description: The ring/modulo hash load balancer
+                  implements consistent hashing to backend hosts.
+                properties:
+                  minimumRingSize:
+                    description: The minimum number of virtual nodes
+                      to use for the hash ring.
+                    type: integer
+                type: object
+              useSourceIp:
+                description: Hash based on the source IP address.
+                type: boolean
+            type: object
+        ```
+
+        </details>
+
+        Due to the cognitive complexity and cost (its huge -- some small changes to our API can easily bloat this further as well), I wanted to replace this with CEL. This can be done with a trivial O(1) CEL expression. (switching to another simpler message, so its not huge):
+
+        ```yaml
+        allowOrigins:
+          description: String patterns that match allowed origins.
+          items:
+            properties:
+              exact:
+                type: string
+              prefix:
+                type: string
+              regex:
+                description: RE2 style regex-based match (https://github.com/google/re2/wiki/Syntax).
+                type: string
+            type: object
+            x-kubernetes-validations:
+            - message: At most one of [exact prefix regex] should
+                be set
+              reason: FieldValueDuplicate
+              rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+          type: array
+        ```
+
+        The problem here is the `array`. Maybe we should have had a `maxItems`, but we don't, and doing so is a backwards incompatible breaking change for our users.
+
+        I understand the cost is theoretically `unbounded list size * really small number` (I think "really small number" is `6`, if I did the cost calculation correctly). But the same applies to native OpenAPI! If I understand right, this limitation essentially means in any `array` APIs we cannot use CEL and are forced to stick with native OpenAPI validation. It works in simple cases, but we don't have simple cases. This will effectively block us from adopting any CEL beyond some trivial use cases; a LARGE portion of our APIs are complex objects nested under unbounded `arrays`. Note even the maxItems bound needs to be pretty extreme for our usages; I got errors until I dropped it under 100 for some of our cases.
+
+        Below shows a minimal reproducer. In the real world, obviously the same rule will not be repeated -- this is just a trivial example.
+
+        ```yaml
+        # Generated with `kubectl kustomize "https://github.com/kubernetes-sigs/gateway-api/config/crd/experimental?ref=v0.8.0"`
+        apiVersion: apiextensions.k8s.io/v1
+        kind: CustomResourceDefinition
+        metadata:
+          name: gatewayclasses.example.io
+        spec:
+          group: example.io
+          names:
+            categories:
+            - gateway-api
+            kind: GatewayClass
+            listKind: GatewayClassList
+            plural: gatewayclasses
+            singular: gatewayclass
+          scope: Cluster
+          versions:
+          - name: v1alpha2
+            schema:
+              openAPIV3Schema:
+                properties:
+                  allowOrigins:
+                    items:
+                      properties:
+                        exact:
+                          type: string
+                        prefix:
+                          type: string
+                        regex:
+                          type: string
+                      type: object
+                      x-kubernetes-validations:
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                        - rule: (has(self.exact)?1:0)+(has(self.prefix)?1:0)+(has(self.regex)?1:0)<=1
+                    type: array
+                type: object
+            served: true
+            storage: true
+        ```
+
+        ### Anything else we need to know?
+
+        I was told to file bugs like this and tag @TristonianJones @cici37  and @zielenski on CEL usability issues, so I am doing so
+
+        ### Kubernetes version
+
+        <details>
+
+        ```console
+        $ kubectl version
+        v1.28.0
+        ```
+
+        </details>
+
+        ### Cloud provider
+
+        <details>
+        kind
+        </details>
+
+        ### OS version
+
+        <details>
+
+        ```console
+        # On Linux:
+        $ cat /etc/os-release
+        # paste output here
+        $ uname -a
+        # paste output here
+
+        # On Windows:
+        C:\> wmic os get Caption, Version, BuildNumber, OSArchitecture
+        # paste output here
+        ```
+
+        </details>
+
+        ### Install tools
+
+        <details>
+
+        </details>
+
+        ### Container runtime (CRI) and version (if applicable)
+
+        <details>
+
+        </details>
+
+        ### Related plugins (CNI, CSI, ...) and versions (if applicable)
+
+        <details>
+
+        </details>
+      author_association: CONTRIBUTOR
+      created_at: '2023-10-02T20:52:02Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.28.2
+      as_of: '2023-10-02T20:52:02Z'
+  metadata:
+    created_at: '2023-10-02T20:52:02Z'
+    state: OPEN
+    state_reason: null
+    closed_at: null
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/feature
+    - kind/support
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/feature: triager
+      kind/support: triager
+      sig/api-machinery: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: true
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: true
+    comments: 11
+    participants: 7
+    reactions_plus_one: 1
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - "Thanks for raising this! \n\nFor cost evaluation, we have both estimated cost and runtime cost. I believe in most cases\
+      \ the runtime cost is actually smaller than the limit we have set, but when it comes to estimated cost, since we would\
+      \ like to prevent the expensive validation rules from running as early as possible which aligned with the shift-left\
+      \ effort, the unbounded list size without a `maxtItems` specified would be quite large especially after multiple selection\
+      \ operation. We have specifically called out the best practice to `put a limit via maxItems, maxProperties, and maxLength\
+      \ for anything that will be processed in a validation rule in order to prevent validation errors during cost estimation`\
+      \ here: https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#resource-use-by-validation-functions\
+      \ to encourage users to follow the best practice.\n\nFor the use case of replacing `OneOf`, have you considered to use\
+      \ cel macro like `exists_one`(Ref: https://github.com/google/cel-go#macros)? I believe it might help greatly in this\
+      \ case. Thank you!"
+    - "\n> The CEL expression doesn't matter here, I can put `'true'` and it is still over the cost limit (IIRC - I tried\
+      \ yesterday).\n\nCurious how come it exceeds the limit with only `true` in the expression. The expression itself is\
+      \ evaluated against the estimated cost and the `really small number` you mentioned above is the estimated cost CEL provides\
+      \ for operations used in validation expressions you provided. \n\n> I get the best practices, but this is not greenfield.\
+      \ We are one of the largest established projects using CRDs, there are literally millions of instances of our CRs deployed.\
+      \ Making breaking changes to our APIs is effectively impossible, especially when the reason is to meet (some what arbitrary)\
+      \ CRD limitations.\n>\nThe feature currently stays in beta and bug fix in cel side did cause some backward incompatible\
+      \ issue(https://github.com/kubernetes/kubernetes/issues/120821). We would try to prevent breaking changes from happening\
+      \ and one of the effort is  [CRD Validation Ratcheting](https://github.com/kubernetes/enhancements/issues/4008). It\
+      \ will greatly help in this case if `Ensure updates to a CRD that don't change CEL rules are allowed even if the existing\
+      \ CEL rules exceed cost estimates` and we'll be working on it. \n\n> For some of our CRDs, we had to limit he maxItems\
+      \ to 100 to meet the overall execution limits -- and this is just to add _one_ CEL expresion; we plan (or planned) to\
+      \ add 100s. We have real users in production with well over 100 items\n\nIf in production users have a really large\
+      \ items and try to do some expensive cel call, it will not pass since we have multiple limitation in place like per\
+      \ expression cost limit, overall expression limit, etc. Unfortunately we don't have unlimited resource to provide, at\
+      \ least it's better than blow up cluster :)\n\n"
+    - |
+      /triage accepted
+    - |-
+      /remove-kind bug
+      /kind support feature
+
+      The current cost estimate is an accurate worst-case scenario, which is what we have to use to prevent abuse. I don't think a new feature doing a better job of bounding resource use than an older feature is a bug, exactly.
+    - |-
+      /triage accepted
+      Hi @cici37, is this still an issue right now? Can we close it?
+    close_outcome: open
+  expected_output:
+    kind:
+    - feature
+    - question
+    area:
+    - sig/api-machinery
+    severity: null
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: open
+- name: kubernetes-136837
+  inputs:
+    issue:
+      number: 136837
+      title: 'tests: "kubectl client" tests assumes amd64'
+      body: |-
+        ### Which jobs are failing?
+
+        https://testgrid.k8s.io/kops-nftables#kops-aws-nftables-rocky10arm64
+
+        ### Which tests are failing?
+
+        [sig-cli] Kubectl client Simple pod should return command exit codes should handle in-cluster config
+
+        ### Since when has it been failing?
+
+        I don't think it ever passed on arm64
+
+        ### Testgrid link
+
+        https://testgrid.k8s.io/kops-nftables#kops-aws-nftables-rocky10arm64
+
+        ### Reason for failure (if possible)
+
+        We get somewhat cryptic output, but I believe it is because the kubectl version we are copying is amd64, but the nodes are arm64
+
+        ```
+        Command stdout:
+        /tmp/kubectl: line 1: syntax error: unexpected end of file (expecting ")")
+
+        stderr:
+        ```
+
+        Looks like we could/should pass node-os-arch in our test, but we're not
+
+        ### Anything else we need to know?
+
+        I'm happy to fix, just opening a bug to track the "why"
+
+        ### Relevant SIG(s)
+      author_association: MEMBER
+      created_at: '2026-02-08T12:16:47Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.35.0
+      as_of: '2026-02-08T12:16:47Z'
+  metadata:
+    created_at: '2026-02-08T12:16:47Z'
+    state: OPEN
+    state_reason: null
+    closed_at: null
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/failing-test
+    - sig/cli
+    - triage/accepted
+    label_provenance:
+      kind/failing-test: author
+      sig/cli: author
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 3
+    participants: 4
+    reactions_plus_one: 0
+    milestone: null
+    template: failing-test
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      You could also put binfmt_misc on your nodes to run amd64 images ;-)
+
+      ... I agree this is a bug.
+    - /triage accepted
+    close_outcome: open
+  expected_output:
+    kind:
+    - failing_test
+    area:
+    - sig/cli
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: open
+- name: kubernetes-106302
+  inputs:
+    issue:
+      number: 106302
+      title: Reconsider how we implement watermarks in P&F
+      body: |-
+        Spin off from https://github.com/kubernetes/kubernetes/pull/105873/files#r735360613
+
+        In my opinion, having additional concepts of TimedObservers rather than relying directly on metrics is unnecessarily complicating the (already pretty complicated) codebase.
+        My main questions are:
+        - do we really need them?
+        - do we really want to get into the business of watermarks, etc.? Can't we rely on monitoring solutions to just do that (compute the max?)
+
+        Mike`s argument was that scraping latency of metric is an issue, but my question is whether it is really an issue?
+
+        For example - if my PL was saturated for 1ms, and other than that stays 50% occupied only - is that really something I care as an operator? I can't imagine any action I could take as an operator based on that information.
+
+        I would really like to see that simplified, but also that's not something I want to block the above PR on - so opening this issue to discuss that further.
+
+        @tkashem @MikeSpreitzer
+      author_association: MEMBER
+      created_at: '2021-11-10T09:04:23Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.22.3
+      as_of: '2021-11-10T09:04:23Z'
+  metadata:
+    created_at: '2021-11-10T09:04:23Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2021-11-15T19:02:20Z'
+    closed_by: wojtek-t
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/cleanup
+    - priority/important-longterm
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/cleanup: author
+      priority/important-longterm: author
+      sig/api-machinery: author
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 5
+    participants: 4
+    reactions_plus_one: 0
+    milestone: null
+    template: null
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - "/cc @MikeSpreitzer @tkashem \n/triage accepted\n"
+    - |-
+      We have been in the business of watermarking since before I got involved.  The max-in-flight filter was already doing watermarking.
+
+      The simplest thing to do is to use a gauge.  Consider a scenario where scrapes happen once per minute (and yes, I know some real scenarios like that).  In that case the admin can only see situations that are very stable.
+    - |-
+      What do you mean by "current"?  When would `Observe` be called for such a histogram?  If that happens when the variable of primary interest changes then we are not getting time-weighted data.  Consider two scenarios.  In scenario A, the variable jumps up at time T0 and back down at time T0+1ms.  In scenario B, the variable jumps up at time T0 and back down at time T0+10s.  Those both produce the same metrics if we only Observe when the variable changes.
+
+      If we want a time-weighted sampling, well, that is the source of most of the complexity you cited.  Note that the cited code is producing both a histogram of _periodic_ samples and a histogram of watermarks.
+
+      The histogram of watermarks lets us know what the sampling missed.
+    close_outcome: completed_other
+  expected_output:
+    kind:
+    - cleanup
+    area:
+    - sig/api-machinery
+    severity: important_longterm
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: completed_other
+- name: kubernetes-126542
+  inputs:
+    issue:
+      number: 126542
+      title: Static Pods never get evicted when under Node Pressure
+      body: "### What happened?\n\nStatic Pods are considered critical by [this code] (https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/eviction/eviction_manager.go#L597)\
+        \ and hence never get evicted.\n\n### What did you expect to happen?\n\nThe [doc](https://github.com/kubernetes/kubernetes/blob/master/pkg/kubelet/eviction/eviction_manager.go#L597)\
+        \ says \n\n> If you are running a [static pod](https://kubernetes.io/docs/concepts/workloads/pods/#static-pods) and\
+        \ want to avoid having it evicted under resource pressure, set the priority field for that Pod directly. Static pods\
+        \ do not support the priorityClassName field.\n\nAt least, we should fix the inconsistency between code and doc.\n\
+        \n### How can we reproduce it (as minimally and precisely as possible)?\n\n1. Run a kubelet with fs eviction and static\
+        \ pods\n```\napiVersion: kubelet.config.k8s.io/v1beta1\nstaticPodPath: /home/k8s/manifests\nevictionHard:\n  imagefs.available:\
+        \ \"2Gi\"\n```\n\n2. Create a static pod spamming disk\n```\napiVersion: v1\nkind: Pod\nmetadata:\n  name: disk\n\
+        spec:\n  priority: 0\n  - name: disk\n    image: docker.io/busybox\n    command: [\"/bin/sh\",  \"-c\", \"/bin/dd\
+        \ if=/dev/zero of=/bigfile bs=1G count=102 && sleep 10000\"]\n```\n\n3. check kubelet logs\n> \"Eviction manager:\
+        \ cannot evict a critical pod\" pod=\"default/disk\"\n\n### Anything else we need to know?\n\n_No response_\n\n###\
+        \ Kubernetes version\n\n<details>\n\n```console\n$ kubectl version\n# paste output here\n```\n\n</details>\n\n###\
+        \ Cloud provider\n\n<details>\nGCP\n</details>\n\n### OS version\n\n<details>\n\n```console\n# On Linux:\n$ cat /etc/os-release\n\
+        # paste output here\n$ uname -a\n# paste output here\n\n# On Windows:\nC:\\> wmic os get Caption, Version, BuildNumber,\
+        \ OSArchitecture\n# paste output here\n```\n\n</details>\n\n### Install tools\n\n<details>\n\n</details>\n\n### Container\
+        \ runtime (CRI) and version (if applicable)\n\n<details>\n\n</details>\n\n### Related plugins (CNI, CSI, ...) and\
+        \ versions (if applicable)\n\n<details>\n\n</details>"
+      author_association: CONTRIBUTOR
+      created_at: '2024-08-05T10:10:34Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.30.3
+      as_of: '2024-08-05T10:10:34Z'
+  metadata:
+    created_at: '2024-08-05T10:10:34Z'
+    state: OPEN
+    state_reason: null
+    closed_at: null
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/documentation
+    - priority/backlog
+    - sig/docs
+    - sig/node
+    - triage/accepted
+    label_provenance:
+      kind/documentation: triager
+      priority/backlog: triager
+      sig/docs: triager
+      sig/node: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: true
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: false
+    comments: 22
+    participants: 9
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - /sig docs
+    - Reading this, what docs are you proposing to fix? Website? Or code docs?
+    - |-
+      Where did you find that?
+
+      You link to code in the description but not sure what doc change you find confusing.
+    - "Hmm. There's definitely an inconsistency.\nI found a comment that reads:\n\n> ```\n> \t// If the pod is marked as critical\
+      \ and static, and support for critical pod annotations is enabled,\n> \t// do not evict such pods. Static pods are not\
+      \ re-admitted after evictions.\n> \t// https://github.com/kubernetes/kubernetes/issues/40573 has more details.\n> ```\n\
+      \nI agree that static Pods _with a critical priority_ aren't evictable. But what about other static Pods where no priority\
+      \ is set in the manifest?\n\n- does the kubelet default static Pods to be critical?\n  - and is this behavior correct?\n\
+      - does the kubelet ignore the `priority` for a static Pod _(kinda - IIRC you need to set_ `priorityClassName` _as well)_\
+      \ ?\n- should the advice in the docs change to explain the kubelet's heuristics for static Pod priority?\n\nAlso see\
+      \ https://github.com/kubernetes/website/pull/47055"
+    - '@ktvargo-ms - do you have a recommended next step to address the inconsistency here?'
+    close_outcome: open
+  expected_output:
+    kind:
+    - docs
+    area:
+    - sig/docs
+    - sig/node
+    severity: backlog
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: open
+- name: kubernetes-110821
+  inputs:
+    issue:
+      number: 110821
+      title: client library module versioning
+      body: |-
+        > I am well aware of the storied past that kubernetes has had with module versioning, thus I will try and work off the [current state](https://github.com/kubernetes/client-go#versioning) of the world, but it would be interesting to understand how this impacts old projects virally entangled with [replace](https://go.dev/doc/modules/gomod-ref#replace).
+
+        If I am developing an internal tool that only imports `k8s.io/client-go/...` and only runs on a cluster that I control, I can trivially pick the exact kubernetes version that I am running, `go get k8s.io/client-go@v0xX.Y` and be happy.
+
+        Per [KEP 917](https://github.com/kubernetes/enhancements/blob/master/keps/sig-architecture/917-go-modules), "consumers are limited to a single copy of kubernetes libraries among all dependencies". As such, if I am running two clusters with different versions and I actually need `v0.20.0` and `v0.21.0`, say due to a feature deprecation, I need to maintain two different versions of my tool?
+
+        Taking this a step further, if I maintain a tool that contains a library component and links against the `k8s.io/...` packages, do I need to release separate versions for every kubernetes minor?
+
+        Finally, I apologize if this is covered in a document or manual somewhere, but I cannot find it documented anywhere; hence my creation of this issue.
+      author_association: NONE
+      created_at: '2022-06-28T05:58:15Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.24.2
+      as_of: '2022-06-28T05:58:15Z'
+  metadata:
+    created_at: '2022-06-28T05:58:15Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2025-03-27T20:58:00Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/support
+    - sig/api-machinery
+    - sig/architecture
+    - triage/accepted
+    label_provenance:
+      kind/support: triager
+      sig/api-machinery: triager
+      sig/architecture: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: false
+    comments: 12
+    participants: 7
+    reactions_plus_one: 0
+    milestone: null
+    template: null
+    locked_reason: null
+    fixing_prs: []
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - "/assign @leilajal \n/triage accepted"
+    - Our [`Version Skew Policy`](https://kubernetes.io/releases/version-skew-policy/) for kubectl <-> kube-apiserver is ±1
+      minor version of kube-apiserver. kubectl makes extensive use of client-go, so I would expect at the very least client-go
+      for 1.20.0 should also support 1.21.0 apiservers.
+    - /triage accepted
+    - /triage accepted
+    close_outcome: invalid
+  expected_output:
+    kind:
+    - question
+    area:
+    - sig/api-machinery
+    - sig/architecture
+    severity: null
+    is_regression: null
+    security_sensitive: false
+    enough_info: null
+    duplicate_of: null
+    close_outcome: invalid
+- name: kubernetes-126908
+  inputs:
+    issue:
+      number: 126908
+      title: 'kubernetes v1.31.0: TypedNewDelayingQueue should be renamed to NewTypedDelayingQueue'
+      body: |-
+        ### What happened?
+
+        TypedNewDelayingQueue in k8s.io/client-go/util/workqueue does not follow the naming convention in the same package.
+
+        ### What did you expect to happen?
+
+        The naming pattern observed in k8s.io/client-go/util/workqueue suggests that TypedNewDelayingQueue should be renamed to NewTypedDelayingQueue.
+        Because we have NewTypedDelayingQueueWithConfig, and other functions are named in such rules, I think this is an obvious conversion tooling error and/or cut and paste error.
+
+        ### How can we reproduce it (as minimally and precisely as possible)?
+
+        There is no reproduction steps.
+
+        ### Anything else we need to know?
+
+        _No response_
+
+        ### Kubernetes version
+
+        <details>
+
+        kubernetes v1.31.0
+
+        ```console
+        $ kubectl version
+        # paste output here
+        ```
+
+        </details>
+
+        ### Cloud provider
+
+        <details>
+
+        </details>
+
+        ### OS version
+
+        <details>
+
+        ```console
+        # On Linux:
+        $ cat /etc/os-release
+        # paste output here
+        $ uname -a
+        # paste output here
+
+        # On Windows:
+        C:\> wmic os get Caption, Version, BuildNumber, OSArchitecture
+        # paste output here
+        ```
+
+        </details>
+
+        ### Install tools
+
+        <details>
+
+        </details>
+
+        ### Container runtime (CRI) and version (if applicable)
+
+        <details>
+
+        </details>
+
+        ### Related plugins (CNI, CSI, ...) and versions (if applicable)
+
+        <details>
+
+        </details>
+      author_association: NONE
+      created_at: '2024-08-26T05:25:39Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.31.0
+      as_of: '2024-08-26T05:25:39Z'
+  metadata:
+    created_at: '2024-08-26T05:25:39Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2024-08-31T18:46:45Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      sig/api-machinery: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 5
+    participants: 5
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 127035
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      Added in https://github.com/kubernetes/kubernetes/pull/124263.
+      /cc @alvaroaleman @sttts
+    - "/cc @MikeSpreitzer @tkashem \n/triage accepted\n"
+    - I can change this but then that of course breaks everyone who uses the current name. Is that something we want to do?
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/api-machinery
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-109576
+  inputs:
+    issue:
+      number: 109576
+      title: client-side apply does not cause managedFields update
+      body: |-
+        ### What happened?
+
+        I created an object with `kubectl apply`, and later I updated the same object with another `kubectl apply`.  After that I looked at the object's managedFields, and saw nothing about the update.
+
+        ### What did you expect to happen?
+
+        I expected managedFields to get updated by the second `kubectl apply`.
+
+        ### How can we reproduce it (as minimally and precisely as possible)?
+
+        ```
+        kubectl apply -f - <<EOF
+        kind: ConfigMap
+        apiVersion: v1
+        metadata:
+          name: test1
+        data:
+          key: value
+        EOF
+
+        sleep 5
+
+        kubectl apply -f - <<EOF
+        kind: ConfigMap
+        apiVersion: v1
+        metadata:
+          name: test1
+        data:
+          key: the other value
+        EOF
+
+        kubectl get --show-managed-fields -o yaml cm test1
+        ```
+
+        ### Anything else we need to know?
+
+        _No response_
+
+        ### Kubernetes version
+
+        <details>
+
+        ```console
+        $ kubectl version
+        Client Version: version.Info{Major:"1", Minor:"23", GitVersion:"v1.23.4", GitCommit:"e6c093d87ea4cbb530a7b2ae91e54c0842d8308a", GitTreeState:"clean", BuildDate:"2022-02-16T12:38:05Z", GoVersion:"go1.17.7", Compiler:"gc", Platform:"linux/amd64"}
+        Server Version: version.Info{Major:"1", Minor:"23", GitVersion:"v1.23.4", GitCommit:"e6c093d87ea4cbb530a7b2ae91e54c0842d8308a", GitTreeState:"clean", BuildDate:"2022-02-16T12:32:02Z", GoVersion:"go1.17.7", Compiler:"gc", Platform:"linux/amd64"}
+        ```
+
+        </details>
+
+        ### Cloud provider
+
+        <details>
+        none
+        </details>
+
+        ### OS version
+
+        <details>
+
+        ```console
+        # On Linux:
+        $ cat /etc/os-release
+        NAME="Ubuntu"
+        VERSION="20.04.4 LTS (Focal Fossa)"
+        ID=ubuntu
+        ID_LIKE=debian
+        PRETTY_NAME="Ubuntu 20.04.4 LTS"
+        VERSION_ID="20.04"
+        HOME_URL="https://www.ubuntu.com/"
+        SUPPORT_URL="https://help.ubuntu.com/"
+        BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+        PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+        VERSION_CODENAME=focal
+        UBUNTU_CODENAME=focal
+
+        $ uname -a
+        Linux mjs-ubu3-kube1.sl.cloud9.ibm.com 5.4.0-104-generic #118-Ubuntu SMP Wed Mar 2 19:02:41 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+        ```
+
+        </details>
+
+        ### Install tools
+
+        <details>
+        kubeadm
+        </details>
+
+        ### Container runtime (CRI) and version (if applicable)
+
+        <details>
+        docker
+        </details>
+
+        ### Related plugins (CNI, CSI, ...) and versions (if applicable)
+
+        <details>
+
+        </details>
+      author_association: MEMBER
+      created_at: '2022-04-20T20:41:00Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.23.6
+      as_of: '2022-04-20T20:41:00Z'
+  metadata:
+    created_at: '2022-04-20T20:41:00Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2022-05-23T17:32:03Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - priority/important-soon
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      priority/important-soon: triager
+      sig/api-machinery: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: false
+    comments: 8
+    participants: 9
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 110058
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - "/assign @apelisse \n/triage accepted"
+    - /cc
+    - |
+      The `managedField` is not updated because you are not changing the structure of the object (adding or removing fields).
+      According to [managedfieldsupdater](https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apiserver/pkg/endpoints/handlers/fieldmanager/managedfieldsupdater.go#L65), the time is updated if and only if the fieldSet is changed. It does not take into account the value of fields.
+
+      One option would be to not compare the fieldSets but directly compare the liveObject & newObject for differences and update the `time` field accordingly.
+      Is it the desired behavior to update the time of `managedFields` when only the value is updated?
+    - '@apelisse, is that documentation correct? Is this what we intended?'
+    - |-
+      > Yes! Look at the first paragraph of https://kubernetes.io/docs/reference/using-api/server-side-apply/#apply-and-update
+
+      I don't see any mention to the timestamp in that first paragraph.
+
+      We've clarified recently the exact semantic of the timestamp, as defined here:
+      https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types.go#L1229-L1233
+
+      I think you've identified the wrong code @glebiller, if you want to go ahead and fix it, go ahead, I'll happily review!
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/api-machinery
+    severity: important_soon
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-111476
+  inputs:
+    issue:
+      number: 111476
+      title: API server etcd3 client logger uses significant amounts of memory when many CRDs are installed
+      body: "### What happened?\n\n### Context\n\nThe @crossplane project uses a lot of CRDs - in some cases almost 2,000.\
+        \ I do mean `kind: CustomResourceDefinition` here, not custom resources. We've noticed that API server memory consumption\
+        \ balloons when many CRDs are installed - for example with ~1,900 CRDs we see the API server using up to ~8Gi RSS.\n\
+        \nA little profiling shows that around 1.5Gi of that memory is being used by the etcd3 client's logger.\n\n### With\
+        \ the Logger\n\nWith Kubernetes built from e092b6d27bff00 with the CRDs at https://github.com/negz/crossplane-scale/tree/dc25bef/etoomanycrds/latest-crds\
+        \ loaded I'm seeing the API server using up to ~7.5GiB RSS. I see it dip to ~5.5GiB, presumably when garbage collection\
+        \ runs.\n\n```\n$ k get nodes\nNAME                                   STATUS   ROLES           AGE     VERSION\ne092b6d27bf-withlogger-control-plane\
+        \   Ready    control-plane   9m47s   v1.25.0-alpha.3.190+e092b6d27bff00\n\n$ k get crds|wc -l\n1878\n```\n\nYou can\
+        \ see `zapCore.newCounters` taking up a ton of memory below. Zap is the logger used by the etcd client. Note that\
+        \ this is a sample, so it's actually using more than the indicated ~800MiB. \n\n![profile-with-logger](https://user-images.githubusercontent.com/1049349/181346601-79dcc113-8a32-4cc9-aed3-8527d9a7b460.png)\n\
+        \n### Without the Logger\n\nI'm seeing the API server using up to ~6GiB RSS. I see it dip to ~4.5GiB, presumably due\
+        \ to GC runs.\n\n```\n$ k get nodes\nNAME                                      STATUS   ROLES           AGE   VERSION\n\
+        e092b6d27bf-withoutlogger-control-plane   Ready    control-plane   31m   v1.25.0-alpha.3.190+e092b6d27bff00-dirty\n\
+        \n$ k get crds|wc -l\n1878\n```\n\nYou can see `zapCore.newCounters` no longer appears below.\n\n![profile-without-logger](https://user-images.githubusercontent.com/1049349/181350279-9c23527d-ff98-4f1d-bf43-db60e4cae27f.png)\n\
+        \n### What did you expect to happen?\n\nI would not expect a logger to be responsible for such a significant amount\
+        \ of the API server's memory consumption.\n\n### How can we reproduce it (as minimally and precisely as possible)?\n\
+        \nYou can get the above profile by:\n\n1. Checking out e092b6d27bff00.\n2. `kind build node-image .` to build a kind\
+        \ node.\n3. `kind create cluster --image kindest/node:latest` to start a control plane for the above build.\n5. `kubectl\
+        \ apply -f https://raw.githubusercontent.com/negz/crossplane-scale/dc25bef/profile.yaml` to allow anonymous pprof\
+        \ access\n6. `kubectl apply -f` the CRDs from https://github.com/negz/crossplane-scale/tree/dc25bef/etoomanycrds/latest-crds\n\
+        7. `go tool pprof -png https+insecure://localhost:$(kind get kubeconfig|grep server|cut -d: -f4)/debug/pprof/heap`\n\
+        \nI used https://github.com/nicolargo/glances to see the RSS but I imagine `top` would show it too.\n\n### Anything\
+        \ else we need to know?\n\n_No response_\n\n### Kubernetes version\n\n<details>\n\n```console\nv1.25.0-alpha.3.190+e092b6d27bff00\n\
+        ```\n\n</details>\n\n### Cloud provider\n\n<details>\nN/A\n</details>\n\n### OS version\n\n<details>\n\n```console\n\
+        # On Linux:\n$ cat /etc/os-release\nBUG_REPORT_URL=\"https://github.com/NixOS/nixpkgs/issues\"\nBUILD_ID=\"22.05.20220713.365e1b3\"\
+        \nDOCUMENTATION_URL=\"https://nixos.org/learn.html\"\nHOME_URL=\"https://nixos.org/\"\nID=nixos\nLOGO=\"nix-snowflake\"\
+        \nNAME=NixOS\nPRETTY_NAME=\"NixOS 22.05 (Quokka)\"\nSUPPORT_URL=\"https://nixos.org/community.html\"\nVERSION=\"22.05\
+        \ (Quokka)\"\nVERSION_CODENAME=quokka\nVERSION_ID=\"22.05\"\n\n$ uname -a\nLinux mael 5.18.7 #1-NixOS SMP Sat Jun\
+        \ 25 13:29:48 UTC 2022 aarch64 GNU/Linux\n```\n\n</details>\n\n### Install tools\n\n<details>\n`kind`\n</details>\n\
+        \n### Container runtime (CRI) and version (if applicable)\n\n<details>\n\n</details>\n\n### Related plugins (CNI,\
+        \ CSI, ...) and versions (if applicable)\n\n<details>\n\n</details>"
+      author_association: CONTRIBUTOR
+      created_at: '2022-07-27T21:42:33Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.24.3
+      as_of: '2022-07-27T21:42:33Z'
+  metadata:
+    created_at: '2022-07-27T21:42:33Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2022-08-01T23:18:29Z'
+    closed_by: k8s-ci-robot
+    closed_by_bot: true
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      sig/api-machinery: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: true
+    comments: 8
+    participants: 6
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 111477
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - Since you looked at the code, and I'd rather not spend time doing that. Any chance you can tell if it's because it's
+      being mis-used?
+    - |-
+      This is a scale dimension where the apiserver has historically [scaled poorly](https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/95-custom-resource-definitions#scale-targets-for-ga).  With the OpenAPI discovery performance being improved it looks like this might be a hint at what the next bottleneck might be?
+
+      Any idea how many etcd clients were instantiated? I suspect it's quite a lot.
+    - "> > Any idea how many etcd clients were instantiated? I suspect it's quite a lot.\n> \n> I don't - will try to find\
+      \ out.\n\nThe zap logs might tell you if you have the data. If my memory of the code is right, you should get 1 etcd\
+      \ client per CRD right now (plus some for builtin types)."
+    - /triage accepted
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/api-machinery
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-105393
+  inputs:
+    issue:
+      number: 105393
+      title: Comment on ResourcePolicyRule does not explain the ClusterScope field
+      body: |-
+        <!-- Please use this template while reporting a bug and provide as much info as possible. Not doing so may result in your bug not being addressed in a timely manner. Thanks!
+
+        If the matter is security related, please disclose it privately via https://kubernetes.io/security/
+        -->
+
+        #### What happened:
+        I looked at the comment on ResourcePolicyRule to understand exactly what its ClusterScope field means, and was dismayed to find an outdated precise description that does not mention that field.
+
+        #### What you expected to happen:
+        I expected that comment to be up to date.
+
+        #### How to reproduce it (as minimally and precisely as possible):
+
+        #### Anything else we need to know?:
+
+        #### Environment:
+        - Kubernetes version (use `kubectl version`): current
+        - Cloud provider or hardware configuration:
+        - OS (e.g: `cat /etc/os-release`):
+        - Kernel (e.g. `uname -a`):
+        - Install tools:
+        - Network plugin and version (if this is a network-related bug):
+        - Others:
+      author_association: MEMBER
+      created_at: '2021-10-01T06:19:42Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.22.2
+      as_of: '2021-10-01T06:19:42Z'
+  metadata:
+    created_at: '2021-10-01T06:19:42Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2021-11-15T18:04:48Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - sig/api-machinery
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      sig/api-machinery: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 3
+    participants: 3
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 105555
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |
+      /triage accepted
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/api-machinery
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-117063
+  inputs:
+    issue:
+      number: 117063
+      title: Sort (unmounted/unattached) volumes for the event message
+      body: |-
+        ### What happened?
+
+        Currently I describe a Pod that is in `ContainerCreating` and fails to attach/mounts its volume:
+        ```
+        $ k describe po loki-0
+
+        Events:
+          Type     Reason       Age                     From     Message
+          ----     ------       ----                    ----     -------
+          Warning  FailedMount  25m (x32 over 6h16m)    kubelet  Unable to attach or mount volumes: unmounted volumes=[loki], unattached volumes=[config loki kubeconfig telegraf-config-volume]: timed out waiting for the condition
+          Warning  FailedMount  9m19s (x35 over 6h9m)   kubelet  Unable to attach or mount volumes: unmounted volumes=[loki], unattached volumes=[loki kubeconfig telegraf-config-volume config]: timed out waiting for the condition
+          Warning  FailedMount  4m47s (x26 over 5h54m)  kubelet  Unable to attach or mount volumes: unmounted volumes=[loki], unattached volumes=[telegraf-config-volume config loki kubeconfig]: timed out waiting for the condition
+          Warning  FailedMount  16s (x75 over 6h21m)    kubelet  Unable to attach or mount volumes: unmounted volumes=[loki], unattached volumes=[kubeconfig telegraf-config-volume config loki]: timed out waiting for the condition
+        ```
+
+        Note that the generated events are shown in 4 section. The only difference between the messages is how the `unattached volumes` are sorted. I suggest to sort the unmounted/unattached) volumes for the event message. This will allow to group all events and properly have the age and the occurrences count reported.
+
+        ### What did you expect to happen?
+
+        I would expect the unmounted/unattached) volumes to be sorted in the events' message and to do not have several group of events for the same issue.
+
+        ### How can we reproduce it (as minimally and precisely as possible)?
+
+        See above.
+
+        ### Anything else we need to know?
+
+        _No response_
+
+        ### Kubernetes version
+
+        <details>
+
+        ```console
+        % k version
+        Client Version: version.Info{Major:"1", Minor:"24", GitVersion:"v1.24.1", GitCommit:"3ddd0f45aa91e2f30c70734b175631bec5b5825a", GitTreeState:"clean", BuildDate:"2022-05-24T12:26:19Z", GoVersion:"go1.18.2", Compiler:"gc", Platform:"darwin/amd64"}
+        Kustomize Version: v4.5.4
+        Server Version: version.Info{Major:"1", Minor:"24", GitVersion:"v1.24.9", GitCommit:"9710807c82740b9799453677c977758becf0acbb", GitTreeState:"clean", BuildDate:"2022-12-08T10:08:06Z", GoVersion:"go1.18.9", Compiler:"gc", Platform:"linux/amd64"}
+        ```
+
+        </details>
+
+        ### Cloud provider
+
+        <details>
+        AWS but does not matter for this issue.
+        </details>
+
+        ### OS version
+
+        <details>
+
+        ```console
+        # On Linux:
+        $ cat /etc/os-release
+        # paste output here
+        $ uname -a
+        # paste output here
+
+        # On Windows:
+        C:\> wmic os get Caption, Version, BuildNumber, OSArchitecture
+        # paste output here
+        ```
+
+        </details>
+
+        ### Install tools
+
+        <details>
+
+        </details>
+
+        ### Container runtime (CRI) and version (if applicable)
+
+        <details>
+
+        </details>
+
+        ### Related plugins (CNI, CSI, ...) and versions (if applicable)
+
+        <details>
+
+        </details>
+      author_association: CONTRIBUTOR
+      created_at: '2023-04-03T10:09:13Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.26.3
+      as_of: '2023-04-03T10:09:13Z'
+  metadata:
+    created_at: '2023-04-03T10:09:13Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2023-06-08T01:52:13Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - sig/storage
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      sig/storage: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: true
+    original_body_unknown: false
+    title_edited: false
+    comments: 3
+    participants: 5
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 117079
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - /assign qingwave
+    - /triage accepted
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    area:
+    - sig/storage
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+- name: kubernetes-108604
+  inputs:
+    issue:
+      number: 108604
+      title: kubectl create role command cannot recognize resource rs.extensions
+      body: |-
+        ### What happened?
+
+        create clusterrole command with resource value `rs.extensions` not work.
+        I got this example command from the help note.
+
+        ```
+        #kubectl create clusterrole -h
+        Create a cluster role.
+
+        Examples:
+          # Create a cluster role named "pod-reader" that allows user to perform "get", "watch" and "list" on pods
+          kubectl create clusterrole pod-reader --verb=get,list,watch --resource=pods
+
+          # Create a cluster role named "pod-reader" with ResourceName specified
+          kubectl create clusterrole pod-reader --verb=get --resource=pods --resource-name=readablepod
+        --resource-name=anotherpod
+
+          # Create a cluster role named "foo" with API Group specified
+          kubectl create clusterrole foo --verb=get,list,watch --resource=rs.extensions
+        .....
+        ```
+
+        But got error with the example command.
+
+        ```
+        #  kubectl create clusterrole foo --verb=get,list,watch --resource=rs.extensions
+        the server doesn't have a resource type "rs" in group "extensions"
+        #
+        ```
+
+        ### What did you expect to happen?
+
+        I think it should work like `rs/extensions`
+
+        ```
+        # kubectl create clusterrole foo --verb=get,list,watch --resource=rs/extensions
+        clusterrole.rbac.authorization.k8s.io/foo created
+        #
+        ```
+
+        ### How can we reproduce it (as minimally and precisely as possible)?
+
+        yes.
+
+        ### Anything else we need to know?
+
+        _No response_
+
+        ### Kubernetes version
+
+        <details>
+
+        ```console
+        $ kubectl version
+        Client Version: version.Info{Major:"1", Minor:"23", GitVersion:"v1.23.4", GitCommit:"e6c093d87ea4cbb530a7b2ae91e54c0842d8308a", GitTreeState:"clean", BuildDate:"2022-02-16T12:38:05Z", GoVersion:"go1.17.7", Compiler:"gc", Platform:"linux/amd64"}
+        Server Version: version.Info{Major:"1", Minor:"23", GitVersion:"v1.23.4", GitCommit:"e6c093d87ea4cbb530a7b2ae91e54c0842d8308a", GitTreeState:"clean", BuildDate:"2022-02-16T12:32:02Z", GoVersion:"go1.17.7", Compiler:"gc", Platform:"linux/amd64"}
+        ```
+
+        </details>
+
+        ### Cloud provider
+
+        <details>
+        no cloud env, just vm
+        </details>
+
+        ### OS version
+
+        <details>
+
+        ```console
+        # On Linux:
+        $ cat /etc/os-release
+        NAME="Ubuntu"
+        VERSION="20.04.2 LTS (Focal Fossa)"
+        ID=ubuntu
+        ID_LIKE=debian
+        PRETTY_NAME="Ubuntu 20.04.2 LTS"
+        VERSION_ID="20.04"
+        HOME_URL="https://www.ubuntu.com/"
+        SUPPORT_URL="https://help.ubuntu.com/"
+        BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+        PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+        VERSION_CODENAME=focal
+        UBUNTU_CODENAME=focal
+
+        $ uname -a
+        Linux k8s-master1 5.4.0-100-generic #113-Ubuntu SMP Thu Feb 3 18:43:29 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+
+        # On Windows:
+        C:\> wmic os get Caption, Version, BuildNumber, OSArchitecture
+        # paste output here
+        ```
+
+        </details>
+
+        ### Install tools
+
+        <details>
+        kubeadm
+        </details>
+
+        ### Container runtime (CRI) and version (if applicable)
+
+        <details>
+        # docker version
+        Client:
+         Version:           20.10.7
+         API version:       1.41
+         Go version:        go1.13.8
+         Git commit:        20.10.7-0ubuntu5~20.04.2
+         Built:             Mon Nov  1 00:34:17 2021
+         OS/Arch:           linux/amd64
+         Context:           default
+         Experimental:      true
+
+        Server:
+         Engine:
+          Version:          20.10.7
+          API version:      1.41 (minimum version 1.12)
+          Go version:       go1.13.8
+          Git commit:       20.10.7-0ubuntu5~20.04.2
+          Built:            Fri Oct 22 00:45:53 2021
+          OS/Arch:          linux/amd64
+          Experimental:     false
+         containerd:
+          Version:          1.5.5-0ubuntu3~20.04.2
+          GitCommit:
+         runc:
+          Version:          1.0.1-0ubuntu2~20.04.1
+          GitCommit:
+         docker-init:
+          Version:          0.19.0
+          GitCommit:
+
+        </details>
+
+        ### Related plugins (CNI, CSI, ...) and versions (if applicable)
+
+        <details>
+
+        </details>
+      author_association: NONE
+      created_at: '2022-03-09T08:16:20Z'
+    repo:
+      name: kubernetes/kubernetes
+      labels: *repo_labels
+      latest_release: v1.23.4
+      as_of: '2022-03-09T08:16:20Z'
+  metadata:
+    created_at: '2022-03-09T08:16:20Z'
+    state: CLOSED
+    state_reason: COMPLETED
+    closed_at: '2022-05-04T01:24:36Z'
+    closed_by: null
+    closed_by_bot: false
+    stale: false
+    lifecycle: []
+    labels:
+    - kind/bug
+    - kind/documentation
+    - sig/auth
+    - sig/cli
+    - triage/accepted
+    label_provenance:
+      kind/bug: author
+      kind/documentation: triager
+      sig/auth: triager
+      sig/cli: triager
+      triage/accepted: triager
+    triager_verified: true
+    kind_changed: false
+    needed_information: false
+    author_is_bot: false
+    body_edited: false
+    original_body_unknown: false
+    title_edited: false
+    comments: 18
+    participants: 8
+    reactions_plus_one: 0
+    milestone: null
+    template: bug-report
+    locked_reason: null
+    fixing_prs:
+    - 109101
+    cross_refs: []
+    transferred_from: null
+    timeline_truncated: false
+    early_maintainer_comments:
+    - |-
+      /sig auth
+      /assign
+    - |-
+      extensions/v1beta1 is no longer served since 1.16
+
+      the example should be updated to refer to `rs.apps`
+    - "Thanks, @liggitt   for this information, I will update this.\n\nOne more thing I have to ask here should I also do\
+      \ update the files/folders under [translations ](https://github.com/kubernetes/kubernetes/tree/2cd5c54f39b3adb4e8532a123b8cc697cf657bc8/staging/src/k8s.io/kubectl/pkg/util/i18n/translations/kubectl)\
+      \ folder like template.pot. "
+    - |-
+      Hi @liggitt
+
+      Any Inputs on this!
+
+      > One more thing I have to ask here should I also do update the files/folders under [translations ](https://github.com/kubernetes/kubernetes/tree/2cd5c54f39b3adb4e8532a123b8cc697cf657bc8/staging/src/k8s.io/kubectl/pkg/util/i18n/translations/kubectl) folder like template.pot.
+    - I don't know how the translation files are maintained, sorry
+    close_outcome: fixed
+  expected_output:
+    kind:
+    - bug
+    - docs
+    area:
+    - sig/auth
+    - sig/cli
+    severity: null
+    is_regression: false
+    security_sensitive: false
+    enough_info: true
+    duplicate_of: null
+    close_outcome: fixed
+evaluators: []
+report_evaluators: []

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EnsembleConfig",
+  "description": "`Ensemble`: several voters, one aggregator.",
+  "type": "object",
+  "properties": {
+    "voters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Voter"
+      }
+    },
+    "aggregator": {
+      "$ref": "#/$defs/Aggregator",
+      "default": {
+        "kind": "vote"
+      }
+    }
+  },
+  "required": [
+    "voters"
+  ],
+  "$defs": {
+    "Voter": {
+      "oneOf": [
+        {
+          "description": "A single-shot LLM call.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "llm"
+            },
+            "model": {
+              "type": "string"
+            },
+            "temperature": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "format": "float",
+              "default": null
+            }
+          },
+          "required": [
+            "kind",
+            "model"
+          ]
+        },
+        {
+          "description": "A decision-model call. Its votes are weighted by their confidence.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "decision"
+            },
+            "model": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "model"
+          ]
+        }
+      ]
+    },
+    "Aggregator": {
+      "oneOf": [
+        {
+          "description": "Per-field (confidence-weighted) majority vote, in code.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "vote"
+            }
+          },
+          "required": [
+            "kind"
+          ]
+        },
+        {
+          "description": "An LLM reads the issue and all votes and decides.",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "judge"
+            },
+            "model": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "model"
+          ]
+        }
+      ]
+    }
+  }
+}

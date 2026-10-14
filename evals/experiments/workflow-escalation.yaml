@@ -1,0 +1,44 @@
+# Experiment: workflow without / with escalation, a threshold sweep, and the
+# decision vs decision_alt model (formerly m3).
+# Step keys: see README.md in this directory.
+
+id: workflow-escalation
+title: workflow without escalation → with escalation → threshold sweep; decision vs decision_alt
+shows: a cost/quality curve within one strategy; calibration
+steps:
+  - id: workflow-decision-only
+    strategy: Workflow
+    split: dev
+    config: {decision_model: "{decision}"}
+    label: workflow {decision}, no escalation
+  - id: workflow-esc-0.8
+    strategy: Workflow
+    split: dev
+    config: {decision_model: "{decision}", escalation: {model: "{llm}", thresholds: {accept: 0.8}}}
+    label: workflow {decision} + escalation {llm}, accept 0.8
+    baseline: workflow-decision-only
+  - id: workflow-esc-0.6
+    strategy: Workflow
+    split: dev
+    config: {decision_model: "{decision}", escalation: {model: "{llm}", thresholds: {accept: 0.6}}}
+    label: workflow {decision} + escalation {llm}, accept 0.6
+    baseline: workflow-esc-0.8
+  - id: workflow-esc-0.9
+    strategy: Workflow
+    split: dev
+    config: {decision_model: "{decision}", escalation: {model: "{llm}", thresholds: {accept: 0.9}}}
+    label: workflow {decision} + escalation {llm}, accept 0.9
+    baseline: workflow-esc-0.8
+  - id: workflow-decision-alt
+    strategy: Workflow
+    split: dev
+    config: {decision_model: "{decision_alt}"}
+    label: workflow {decision_alt}, no escalation
+    baseline: workflow-decision-only
+compare:
+  - title: escalation and threshold sweep
+    baseline: workflow-decision-only
+    runs: [workflow-decision-only, workflow-esc-0.6, workflow-esc-0.8, workflow-esc-0.9]
+  - title: decision model
+    baseline: workflow-decision-only
+    runs: [workflow-decision-only, workflow-decision-alt]

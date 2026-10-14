@@ -1,0 +1,6 @@
+# Hosted: Azure OpenAI GPT-6 deployments (AZURE_OPENAI_RESOURCE, AZURE_OPENAI_API_KEY) and TypeSafe Jev (TYPESAFE_API_KEY).
+decision_model: typesafe:jev-latest
+escalation:
+  model: azure:gpt-6-luna
+  thresholds:
+    accept: 0.6

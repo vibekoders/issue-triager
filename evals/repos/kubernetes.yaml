@@ -1,0 +1,109 @@
+# How kubernetes/kubernetes labels map onto the triage fields.
+#
+# Every label name here was checked against the repo's label list
+# (gh api repos/kubernetes/kubernetes/labels --paginate) on 2026-10-14.
+# PLAN.md's `triage/support` does not exist: support requests are labeled
+# `kind/support` and closed, so that label stands in for it under `invalid`.
+
+repo: kubernetes/kubernetes
+name: kubernetes
+
+# Labels a triager chooses from; these go into `repo.labels` of every case.
+context_label_prefixes: [kind/, sig/, area/, priority/, triage/]
+
+kind:
+  kind/bug: bug
+  kind/feature: feature
+  kind/support: question
+  kind/documentation: docs
+  kind/cleanup: cleanup
+  # Dependency bumps are code health; triage-core's `cleanup` covers them.
+  kind/dependency: cleanup
+  kind/failing-test: failing_test
+  kind/flake: flake
+
+# kind/* labels that tag an issue without saying what it is. An issue with
+# only these has no expected kind and is not eligible.
+kind_tags: [kind/api-change, kind/deprecation, kind/regression, kind/design]
+
+area_prefix: sig/
+
+severity:
+  priority/critical-urgent: critical
+  priority/important-soon: important_soon
+  priority/important-longterm: important_longterm
+  priority/backlog: backlog
+# Set while a priority is undecided: no expected severity.
+severity_undecided: [priority/awaiting-more-evidence]
+
+is_regression: [kind/regression]
+# Kinds for which a missing regression label means "not a regression".
+regression_kinds: [bug, failing_test, flake]
+
+security_sensitive: [area/security, official-cve-feed, committee/security-response]
+
+not_enough_info: [triage/needs-information, triage/not-reproducible]
+needs_information: triage/needs-information
+
+duplicate: [triage/duplicate]
+
+# Closed without a fix while carrying one of these: not a valid issue.
+invalid: [kind/support, triage/unresolved]
+
+needs_triage: [needs-triage]
+accepted: triage/accepted
+triage_status: [needs-triage, needs-sig, needs-kind, needs-priority, triage/accepted]
+
+lifecycle:
+  stale: lifecycle/stale
+  rotten: lifecycle/rotten
+  frozen: lifecycle/frozen
+
+extra: [good first issue, help wanted]
+
+# Accounts that act for others (prow runs everyone's /commands) or close
+# issues on their own (the lifecycle bot).
+bots:
+  - kubernetes-prow
+  - k8s-ci-robot
+  - k8s-triage-robot
+  - fejta-bot
+  - k8s-github-robot
+  - k8s-merge-robot
+  - k8s-bot
+
+# Slash commands removed from bodies before they reach a strategy. Prow
+# turns them into labels, assignees and state changes, so they leak answers.
+slash_commands:
+  - kind
+  - sig
+  - area
+  - priority
+  - triage
+  - assign
+  - unassign
+  - cc
+  - uncc
+  - label
+  - remove-*
+  - lifecycle
+  # `/committee security-response` labels committee/security-response, one
+  # of the security_sensitive labels; `/wg` and `/language` label too.
+  - committee
+  - wg
+  - language
+  - milestone
+  - close
+  - reopen
+  - retitle
+  - help
+  - good-first-issue
+  - hold
+  - unhold
+
+# Issue templates, recognized by their first heading in the body.
+templates:
+  bug-report: ["what happened"]
+  enhancement: ["what would you like to be added"]
+  failing-test: ["which jobs are failing"]
+  flaking-test: ["which jobs are flaking"]

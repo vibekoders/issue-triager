@@ -1,0 +1,22 @@
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
+# Rust
+target/
+
+.env
+
+# Python
+__pycache__/
+.venv/
+
+# Fetched and derived data (datasets/ holds the committed datasets)
+/data/

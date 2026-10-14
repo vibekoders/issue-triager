@@ -1,0 +1,12 @@
+# Workflow with escalation through a tool-using sub-agent for the fields that
+# need repo context (area, duplicates); other low-confidence fields still get
+# a single LLM call. Area gets a lower bar, because the sub-agent is costly.
+decision_model: ollama:tev1:0.8b-q8_0
+escalation:
+  model: ollama:qwen3:1.7b
+  sub_agent: true
+  thresholds:
+    accept: 0.8
+    per_field:
+      area: 0.6
+reply_model: ollama:qwen3:1.7b

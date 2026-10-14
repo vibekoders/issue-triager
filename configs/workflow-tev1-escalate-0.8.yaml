@@ -1,0 +1,8 @@
+# Workflow threshold sweep (experiment 3): tev1 answers first; fields below
+# 0.8 confidence go to one targeted qwen3:1.7b call each. No reply_model, so
+# the sweep measures escalation alone (the reply is only scored by the judge).
+decision_model: ollama:tev1:0.8b-q8_0
+escalation:
+  model: ollama:qwen3:1.7b
+  thresholds:
+    accept: 0.8

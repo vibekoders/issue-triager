@@ -1,0 +1,85 @@
+# Model profiles and settings shared by every experiment file in this
+# directory (see README.md here for the format and the model roles).
+
+# Model roles. Resolution, highest first: --model ROLE=ADDRESS, the env
+# EXPERIMENT_MODEL_<ROLE> (JUDGE_MODEL is an alias for the judge), then the
+# profile (--profile, else $EXPERIMENT_PROFILE, else default_profile).
+profiles:
+  # Hosted profiles: one frontier provider for the LLM roles and the judge,
+  # TypeSafe's Jev as the decision model (TYPESAFE_API_KEY). Each needs its
+  # provider's key (see .env.example). decision_alt is the local tev1 on
+  # Ollama in every one of them: only the `workflow-decision-alt` step uses it
+  # (it compares two decision models, and Jev is the only hosted one), so
+  # without an Ollama skip that step or set --model decision_alt=ADDRESS.
+  # Steps that use an Ollama model run one case at a time.
+
+  # OpenAI GPT-6 through the Responses API (OPENAI_API_KEY).
+  openai:
+    llm: openai:gpt-6-luna
+    llm_large: openai:gpt-6-sol
+    decision: typesafe:jev-latest
+    decision_alt: ollama:tev1:0.8b-q8_0
+    judge: openai:gpt-6-sol
+    max_concurrency: 8
+  # Anthropic Claude (ANTHROPIC_API_KEY).
+  anthropic:
+    llm: anthropic:claude-haiku-4-5
+    llm_large: anthropic:claude-sonnet-5
+    decision: typesafe:jev-latest
+    decision_alt: ollama:tev1:0.8b-q8_0
+    judge: anthropic:claude-sonnet-5
+    max_concurrency: 8
+  # Google Gemini through the Gemini API (GEMINI_API_KEY).
+  gemini:
+    llm: gemini:gemini-3.5-flash-lite
+    llm_large: gemini:gemini-3.1-pro-preview
+    decision: typesafe:jev-latest
+    decision_alt: ollama:tev1:0.8b-q8_0
+    judge: gemini:gemini-3.1-pro-preview
+    max_concurrency: 8
+  # Azure OpenAI GPT-6, addressed by deployment name (AZURE_OPENAI_RESOURCE,
+  # AZURE_OPENAI_API_KEY; deployments named gpt-6-luna and gpt-6-sol). The
+  # profile RESULTS.md was produced with (then called `hosted`).
+  azure:
+    llm: azure:gpt-6-luna
+    llm_large: azure:gpt-6-sol
+    decision: typesafe:jev-latest
+    decision_alt: ollama:tev1:0.8b-q8_0
+    judge: azure:gpt-6-sol
+    max_concurrency: 8
+  # Everything on the local Ollama. The judge is Qwen like the strategies
+  # (PLAN.md wants another family; see "The judge's model family" in
+  # evals/README.md). Slow on CPU: about 10 hours for size 20 without --no-judge.
+  local:
+    llm: ollama:qwen3:1.7b
+    llm_large: ollama:qwen3:4b
+    decision: ollama:tev1:0.8b-q8_0
+    decision_alt: ollama:tev1:4b
+    judge: ollama:qwen3:4b
+    max_concurrency: 1
+default_profile: openai
+
+defaults:
+  dataset: datasets/kubernetes-{split}-{size}.yaml
+  sizes: [20, 200, 500]
+  # the heuristic makes no model calls
+  heuristic_max_concurrency: 8
+  # a step (or judge) that uses an Ollama model runs at most this many cases at once
+  ollama_max_concurrency: 1
+  # for --dry-run estimates only: seconds per model call
+  seconds_per_call:
+    azure:gpt-6-luna: 4
+    azure:gpt-6-sol: 6
+    # not measured: assumed like the Azure deployments
+    openai:gpt-6-luna: 4
+    openai:gpt-6-sol: 6
+    anthropic:claude-haiku-4-5: 4
+    anthropic:claude-sonnet-5: 8
+    gemini:gemini-3.5-flash-lite: 3
+    gemini:gemini-3.1-pro-preview: 10
+    typesafe:jev-latest: 0.3
+    ollama:qwen3:1.7b: 30
+    ollama:qwen3:4b: 60
+    ollama:tev1:0.8b-q8_0: 5
+    ollama:tev1:4b: 15
+    default: 10

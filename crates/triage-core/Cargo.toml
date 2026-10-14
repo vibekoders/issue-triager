@@ -1,0 +1,18 @@
+[package]
+name = "triage-core"
+description = "Request, response and config types shared by the triage strategies"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+schemars.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+anyhow.workspace = true
+
+[[bin]]
+name = "triage-schema"
+path = "src/bin/triage-schema.rs"

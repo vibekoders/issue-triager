@@ -1,0 +1,75 @@
+services:
+  restate:
+    image: docker.restate.dev/restatedev/restate:1.7.13
+    ports:
+      - "8080:8080" # ingress
+      - "9070:9070" # admin API + UI
+    environment:
+      # The node name is otherwise the container hostname, which changes when the
+      # container is recreated, and Restate then refuses to reuse its data.
+      RESTATE_NODE_NAME: ${RESTATE_NODE_NAME:-restate}
+      # Traces go to Logfire when LOGFIRE_TOKEN is set. Unlike the Rust SDK,
+      # the server can't derive the region from the token.
+      RESTATE_TRACING_ENDPOINT: ${RESTATE_TRACING_ENDPOINT:-otlp+https://logfire-${LOGFIRE_REGION:-eu}.pydantic.dev/v1/traces}
+      RESTATE_TRACING_HEADERS__AUTHORIZATION: ${LOGFIRE_TOKEN:-}
+      # Server-wide defaults for services that don't set their own (every
+      # strategy also sets these on its workflow). A local model call can take
+      # many minutes, and with the defaults (1m, then 10m) Restate cuts off a
+      # running ctx.run and starts it over.
+      RESTATE_WORKER__INVOKER__INACTIVITY_TIMEOUT: 5m
+      RESTATE_WORKER__INVOKER__ABORT_TIMEOUT: 1h
+    # When the service runs on the host (`cargo run -p triage-service --
+    # serve`), Restate reaches it at http://host.docker.internal:9080. Docker
+    # Desktop provides that name, this mapping makes it work on Linux too. (In
+    # compose, the `app` profile below, it is http://service:9080.)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - restate-data:/restate-data
+
+  # The triage service, built from the Dockerfile, for running the strategies
+  # without Rust: `docker compose --profile app up -d --build`. Restate
+  # reaches it at http://service:9080; set SERVICE_URL=http://service:9080 in
+  # .env so the harness registers that URL. Keys and LOGFIRE_* come from .env.
+  service:
+    profiles: [app]
+    build: .
+    image: issue-triager-service
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # These win over .env, whose values are for processes on the host.
+      LISTEN_ADDR: 0.0.0.0:9080
+      CORPUS_DIR: /app/data/corpus
+      OLLAMA_HOST: http://ollama:11434
+    # Published on 9081 so it doesn't clash with a service run on the host;
+    # Restate doesn't need it (it uses the compose network).
+    ports:
+      - "${SERVICE_HOST_PORT:-9081}:9080"
+    # The agent's issue search; built by `normalize-issues` (README). Without
+    # it the agent's search tools return errors and everything else works.
+    volumes:
+      - ./data/corpus:/app/data/corpus:ro
+    depends_on:
+      - restate
+    # The service flushes its last spans to Logfire on SIGTERM.
+    stop_grace_period: 30s
+
+  # Local models, only with `--profile local` (the `local` experiment
+  # profile, and the decision_alt step of the hosted ones).
+  ollama:
+    profiles: [local]
+    image: ollama/ollama:0.40.3
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+volumes:
+  restate-data:
+  ollama:
+    # A fixed name rather than the project-prefixed one, so it is shared with
+    # `docker run -v ollama:...` and pulled models are reused; compose creates
+    # it when it doesn't exist yet.
+    name: ollama

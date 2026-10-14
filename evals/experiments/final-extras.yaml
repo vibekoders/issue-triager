@@ -1,0 +1,49 @@
+# Experiment: extra runs on the test split next to final-comparison: an
+# identical second agent run (how much two runs differ by chance), the agent
+# without tools (what the tools add; the 500-issue sets have labeled
+# duplicates), and the escalation thresholds either side of 0.8.
+# All steps are optional (--include-optional): they are not part of the
+# default plan or the cost estimates in docs/costs.md.
+# Step keys: see README.md in this directory.
+
+id: final-extras
+title: noise, tools and thresholds on the test split
+shows: run-to-run noise, what the agent's tools add, and the cost/quality curve of escalation
+steps:
+  - id: final-agent-tools-repeat
+    strategy: Agent
+    split: test
+    config: {model: "{llm}", max_turns: 8}
+    label: agent {llm}, with tools (repeat)
+    optional: true
+    baseline: final-agent-tools
+  - id: final-agent-no-tools
+    strategy: Agent
+    split: test
+    config: {model: "{llm}", max_turns: 8, tools: []}
+    label: agent {llm}, no tools
+    optional: true
+  - id: final-workflow-esc-0.6
+    strategy: Workflow
+    split: test
+    config: {decision_model: "{decision}", escalation: {model: "{llm}", thresholds: {accept: 0.6}}}
+    label: workflow {decision} + escalation {llm}, accept 0.6
+    optional: true
+    baseline: final-workflow-decision-only
+  - id: final-workflow-esc-0.9
+    strategy: Workflow
+    split: test
+    config: {decision_model: "{decision}", escalation: {model: "{llm}", thresholds: {accept: 0.9}}}
+    label: workflow {decision} + escalation {llm}, accept 0.9
+    optional: true
+    baseline: final-workflow-decision-only
+compare:
+  - title: run-to-run noise (identical configs)
+    baseline: final-agent-tools
+    runs: [final-agent-tools, final-agent-tools-repeat]
+  - title: tool use
+    baseline: final-agent-no-tools
+    runs: [final-agent-no-tools, final-agent-tools]
+  - title: escalation threshold
+    baseline: final-workflow-decision-only
+    runs: [final-workflow-decision-only, final-workflow-esc-0.6, final-workflow-esc-0.8, final-workflow-esc-0.9]

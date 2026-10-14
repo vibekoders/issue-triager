@@ -1,0 +1,7 @@
+# DraftVerify: tev1 drafts every field; one qwen3:1.7b agent verifies only the
+# fields below 0.8 confidence. Compare with workflow-tev1-escalate.yaml.
+decision_model: ollama:tev1:0.8b-q8_0
+verifier_model: ollama:qwen3:1.7b
+thresholds:
+  accept: 0.8
+max_turns: 8

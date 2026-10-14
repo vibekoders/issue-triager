@@ -1,0 +1,3 @@
+# Workflow, decision model only, with the larger tev1:4b (experiment 3:
+# decision model size; compare with workflow-tev1-none.yaml).
+decision_model: ollama:tev1:4b

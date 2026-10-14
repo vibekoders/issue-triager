@@ -1,0 +1,6 @@
+# Workflow with Jev as the decision model (PLAN.md experiment 3, "Jev vs.
+# Clef"): no escalation (the default) and no reply, so it compares with
+# workflow-clef.yaml and workflow-tev1-none.yaml on the decision model alone.
+# Needs TYPESAFE_API_KEY. evals/experiments/workflow-escalation.yaml runs the same config inline
+# (workflow-decision-only, decision role of the hosted profile).
+decision_model: typesafe:jev-latest

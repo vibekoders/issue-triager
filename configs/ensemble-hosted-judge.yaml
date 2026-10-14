@@ -1,0 +1,12 @@
+# Hosted: Azure OpenAI GPT-6 deployments (AZURE_OPENAI_RESOURCE, AZURE_OPENAI_API_KEY) and TypeSafe Jev (TYPESAFE_API_KEY).
+# Voters differ by model, not temperature: GPT-6 are reasoning models.
+voters:
+  - kind: llm
+    model: azure:gpt-6-luna
+  - kind: llm
+    model: azure:gpt-6-sol
+  - kind: decision
+    model: typesafe:jev-latest
+aggregator:
+  kind: judge
+  model: azure:gpt-6-sol

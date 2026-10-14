@@ -1,0 +1,22 @@
+# Experiment: single_shot with the llm vs the llm_large role (formerly m2).
+# Step keys: see README.md in this directory.
+
+id: single-shot-model-size
+title: single_shot llm → llm_large
+shows: first points on the cost/quality chart; the LLM judge on suggested_reply
+steps:
+  - id: single-shot-llm
+    strategy: SingleShot
+    split: dev
+    config: {model: "{llm}"}
+    label: single_shot {llm}
+  - id: single-shot-llm-large
+    strategy: SingleShot
+    split: dev
+    config: {model: "{llm_large}"}
+    label: single_shot {llm_large}
+    baseline: single-shot-llm
+compare:
+  - title: model size
+    baseline: single-shot-llm
+    runs: [single-shot-llm, single-shot-llm-large]

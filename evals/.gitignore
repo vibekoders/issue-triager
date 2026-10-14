@@ -1,0 +1,3 @@
+# Eval results: one JSON per (run, strategy, config) with full outputs.
+# Logfire is the shared UI; commit a experiment's files deliberately (git add -f).
+/results/

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TriageRequest",
+  "description": "The input of every strategy.\n\n`config` is kept as raw JSON on the wire: [`TriageRequest::typed`] parses\nit into the strategy's config type and hashes it as it was sent, so the\nharness can compute the same hash without knowing the config's defaults.",
+  "type": "object",
+  "properties": {
+    "config": true,
+    "issue": {
+      "$ref": "#/$defs/Issue"
+    },
+    "repo": {
+      "$ref": "#/$defs/Repo"
+    }
+  },
+  "required": [
+    "config",
+    "issue",
+    "repo"
+  ],
+  "$defs": {
+    "Issue": {
+      "description": "The issue as it was when it was filed, trimmed to what a triager sees.\n\nLabels, state, comments and anything else that reveals how the issue was\ntriaged are left out on purpose: they are the expected answers.",
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "description": "The body with slash commands (`/kind bug`, `/sig node`, ...) removed.",
+          "type": "string"
+        },
+        "author_association": {
+          "description": "GitHub's author association: `NONE`, `CONTRIBUTOR`, `MEMBER`, ...",
+          "type": "string"
+        },
+        "created_at": {
+          "description": "RFC 3339.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "number",
+        "title",
+        "body",
+        "author_association",
+        "created_at"
+      ]
+    },
+    "Repo": {
+      "description": "The repository as it was when the issue was filed.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "`owner/name`.",
+          "type": "string"
+        },
+        "labels": {
+          "description": "The labels a triager can choose from.",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Label"
+          }
+        },
+        "latest_release": {
+          "description": "The latest release when the issue was filed.",
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        },
+        "as_of": {
+          "description": "RFC 3339. Tools only see issues created before this.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "labels",
+        "as_of"
+      ]
+    },
+    "Label": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  }
+}

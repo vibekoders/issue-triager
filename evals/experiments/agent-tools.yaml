@@ -1,0 +1,25 @@
+# Experiment: the agent without tools vs with all tools (formerly m4).
+# PLAN.md's m4 is "without tools → with search_issues". The with-tools step
+# leaves `tools` unset and so gets all five tools (search_issues, get_issue,
+# list_labels, get_issue_templates, get_releases).
+# Step keys: see README.md in this directory.
+
+id: agent-tools
+title: agent without tools → with tools
+shows: where agents pay off (duplicates, though the 20-issue sets have no labeled ones)
+steps:
+  - id: agent-no-tools
+    strategy: Agent
+    split: dev
+    config: {model: "{llm}", max_turns: 8, tools: []}
+    label: agent {llm}, no tools
+  - id: agent-tools
+    strategy: Agent
+    split: dev
+    config: {model: "{llm}", max_turns: 8}
+    label: agent {llm}, with tools
+    baseline: agent-no-tools
+compare:
+  - title: tool use
+    baseline: agent-no-tools
+    runs: [agent-no-tools, agent-tools]
